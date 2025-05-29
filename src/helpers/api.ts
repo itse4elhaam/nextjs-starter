@@ -42,12 +42,13 @@ export async function fetcher<TRequest = unknown, TResponse = unknown>({
       data,
       error: null,
     };
-  } catch (err: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       ok: false,
       status: 0,
       data: null,
-      error: err.message || "An unexpected error occurred",
+      error: errorMessage || "An unexpected error occurred",
     };
   }
 }

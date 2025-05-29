@@ -9,7 +9,7 @@ export function getLocalStorage<T>(key: string): T | null {
   }
 }
 
-export function setLocalStorage(key: string, value: any): void {
+export function setLocalStorage(key: string, value: unknown): void {
   try {
     const serializedValue = JSON.stringify(value);
     localStorage.setItem(key, serializedValue);
@@ -29,7 +29,7 @@ export function getSessionStorage<T>(key: string): T | null {
   }
 }
 
-export function setSessionStorage(key: string, value: any): void {
+export function setSessionStorage(key: string, value: unknown): void {
   try {
     const serializedValue = JSON.stringify(value);
     sessionStorage.setItem(key, serializedValue);

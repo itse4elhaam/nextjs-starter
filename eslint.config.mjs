@@ -21,6 +21,7 @@ const eslintConfig = [
   {
     rules: {
       "max-lines": ["error", { max: 600, skipBlankLines: true }],
+      "react/react-in-jsx-scope": "off",
       "@typescript-eslint/naming-convention": [
         "error",
         {
