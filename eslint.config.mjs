@@ -20,7 +20,7 @@ const eslintConfig = [
   ),
   {
     rules: {
-      "max-lines": ["warn", { max: 600, skipBlankLines: true }],
+      "max-lines": ["error", { max: 600, skipBlankLines: true }],
       "@typescript-eslint/naming-convention": [
         "error",
         {
