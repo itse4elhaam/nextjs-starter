@@ -10,7 +10,38 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.extends(
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+  ),
+  {
+    rules: {
+      "max-lines": ["warn", { max: 600, skipBlankLines: true }],
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          selector: "interface",
+          format: ["PascalCase"],
+          custom: {
+            regex: "^I[A-Z]",
+            match: true,
+          },
+        },
+        {
+          selector: "typeAlias",
+          format: ["PascalCase"],
+          custom: {
+            regex: "^T[A-Z]",
+            match: true,
+          },
+        },
+      ],
+    },
+  },
 ];
 
 export default eslintConfig;
