@@ -25,5 +25,5 @@ jobs:
         # NOTE: this issue is on github's side
         # cache: 'pnpm'
     - run: npm i -g pnpm
+    - run: pnpm i
     - run: pnpm lint
-
