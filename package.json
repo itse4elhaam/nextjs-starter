@@ -8,7 +8,8 @@
     "start": "npx env-cmd -f \".env\" next start",
     "lint": "next lint",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "type-check": "bunx tsc --noEmit"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
