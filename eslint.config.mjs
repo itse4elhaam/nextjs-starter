@@ -1,3 +1,5 @@
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
@@ -10,14 +12,12 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends(
-    "next/core-web-vitals",
-    "next/typescript",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-  ),
+  ...nextCoreWebVitals,
+  ...nextTypescript,
+  ...compat.extends("plugin:react/recommended"),
+  ...compat.extends("plugin:react-hooks/recommended"),
+  ...compat.extends("plugin:@typescript-eslint/recommended"),
+  ...compat.extends("prettier"),
   {
     rules: {
       "max-lines": ["error", { max: 600, skipBlankLines: true }],
@@ -42,6 +42,15 @@ const eslintConfig = [
         },
       ],
     },
+  },
+  {
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
   },
 ];
 
