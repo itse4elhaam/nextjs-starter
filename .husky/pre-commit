@@ -1,5 +1,5 @@
 [ -n "$CI" ] && exit 0
 
 # this formats the staged files and then updates the index accordingly
-prettier $(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g') --write --ignore-unknown
+bunx prettier $(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g') --write --ignore-unknown
 git update-index --again
