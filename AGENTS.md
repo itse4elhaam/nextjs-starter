@@ -29,7 +29,7 @@ Start production server (requires .env):
 bun run start
 ```
 
-Lint (ESLint):
+Lint (Biome):
 
 ```bash
 bun run lint
@@ -41,7 +41,7 @@ Type-check (tsc):
 bun run type-check
 ```
 
-Format (Prettier):
+Format (Biome):
 
 ```bash
 bun run format
@@ -57,8 +57,8 @@ is added, update this section with “run one test” commands.
 
 - CI (GitHub Actions) runs `bun run lint` and `bun run type-check`.
 - Husky hooks:
-  - pre-commit: runs Prettier on staged files.
-  - pre-push: runs ESLint.
+  - pre-commit: runs Biome format on staged files.
+  - pre-push: runs `bun lint` (Biome check).
 
 ## Tech Stack
 
@@ -67,6 +67,7 @@ is added, update this section with “run one test” commands.
 - TypeScript (strict, noEmit)
 - Tailwind CSS v4 + shadcn/ui
 - Zod + @t3-oss/env-core for env validation
+- Drizzle ORM (Postgres) + drizzle-kit
 
 ## Project Structure
 
@@ -75,30 +76,22 @@ is added, update this section with “run one test” commands.
   `src/components/app/atoms`, `molecules`, `compounds`.
 - Utilities live in `src/lib/` (e.g., `utils.ts`, `types.ts`, `config.ts`).
 
-## Formatting (Prettier)
+## Formatting (Biome)
 
-Defined in `.prettierrc`:
+Biome config lives in `biome.json`:
 
-- Semicolons: `true`
-- Quotes: double (`"`")
-- Indentation: 2 spaces (`tabWidth: 2`, `useTabs: false`)
-- Print width: 80
-- Overrides:
-  - `next.config.mjs` and `redirects.mjs` use `printWidth: 1000`
+- Indentation: 2 spaces
+- Line width: 80
 
 Run `bun run format` before pushing changes that touch formatting.
 
-## Linting (ESLint)
+## Linting (Biome)
 
-ESLint config extends Next.js + TypeScript + React + Hooks + Prettier.
+Biome enforces recommended rules for linting and formatting. Keep naming
+conventions consistent:
 
-Custom rules to respect:
-
-- `max-lines`: 600 lines per file (skip blank lines)
-- `react/react-in-jsx-scope`: disabled (Next.js handles React import)
-- `@typescript-eslint/naming-convention`:
-  - Interfaces: PascalCase with `I` prefix (e.g., `IUser`)
-  - Type aliases: PascalCase with `T` prefix (e.g., `TUser`)
+- Interfaces: PascalCase with `I` prefix (e.g., `IUser`)
+- Type aliases: PascalCase with `T` prefix (e.g., `TUser`)
 
 ## TypeScript Settings
 
@@ -140,6 +133,7 @@ Follow strict typing conventions. Avoid implicit `any` (TypeScript will fail).
 - Use `src/lib/config.ts` with `createEnv` + Zod for validation.
 - Client env vars must use the `NEXT_PUBLIC_` prefix.
 - Use `process.env` through the centralized config, not ad-hoc reads.
+- Database connection uses `DATABASE_URL` (see `.env.example`).
 
 ## Tailwind / UI
 
