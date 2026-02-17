@@ -3,14 +3,15 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    PORT: z.coerce.number(),
-    NODE_ENV: z.enum(["production", "development"]),
+    DATABASE_URL: z.string().url().optional(),
+    PORT: z.coerce.number().default(3000),
+    NODE_ENV: z.enum(["production", "development"]).default("development"),
   },
 
   clientPrefix: "NEXT_PUBLIC_",
 
   client: {
-    NEXT_PUBLIC_API_BASE_URL: z.string().url(),
+    NEXT_PUBLIC_API_BASE_URL: z.string().url().default("http://localhost:3000"),
   },
 
   runtimeEnv: process.env,
