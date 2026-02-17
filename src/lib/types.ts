@@ -1,4 +1,4 @@
-import { HTTP_VERBS } from "./constants";
+import type { HTTP_VERBS } from "./constants";
 
 export interface IFetchOptions<TBody = unknown> {
   url: string;

@@ -1,4 +1,4 @@
-import { IFetchOptions, IFetchResponse } from "@/lib/types";
+import type { IFetchOptions, IFetchResponse } from "@/lib/types";
 
 export async function fetcher<TRequest = unknown, TResponse = unknown>({
   url,
