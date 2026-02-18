@@ -169,7 +169,9 @@ nextjs-starter/
 │   │   └── example-service.ts
 │   └── lib/                  # Core utilities & configuration
 │       ├── config.ts         # Environment validation (Zod + T3 Env)
+│       ├── env.ts            # Environment schema (createEnv)
 │       ├── constants.ts      # App constants (HTTP_VERBS, etc.)
+│       ├── enums.ts          # Shared enums (ErrorCode)
 │       ├── types.ts          # TypeScript interfaces/types
 │       ├── examples-schema.ts
 │       ├── utils.ts          # Utility functions (cn, isClientSide)
@@ -573,9 +575,9 @@ npm install -g bun
 4. Ensure client variables DO have `NEXT_PUBLIC_` prefix
 5. Restart the dev server after changes
 
-### ESLint naming convention errors
+### Biome naming convention errors
 
-**Problem:** `Interface 'User' incorrectly named, must match the pattern '^I[A-Z]'`
+**Problem:** `Interface 'User' incorrectly named, must match the pattern 'I[A-Z]'`
 
 **Solution:**
 ```typescript
@@ -601,7 +603,7 @@ bun run prepare
 bunx husky install
 ```
 
-### Prettier not formatting on commit
+### Biome not formatting on commit
 
 **Problem:** Files aren't auto-formatted
 
