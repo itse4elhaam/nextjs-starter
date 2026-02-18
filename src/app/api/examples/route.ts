@@ -9,7 +9,7 @@ import {
 
 export const revalidate = 60;
 
-export async function GET() {
+function ensureDatabaseConfigured() {
   if (!env.DATABASE_URL) {
     return NextResponse.json(
       { error: "DATABASE_URL is not configured." },
@@ -17,22 +17,41 @@ export async function GET() {
     );
   }
 
-  const examples = await listExamplesService();
+  return null;
+}
 
-  return NextResponse.json({ data: examples });
+export async function GET() {
+  const databaseError = ensureDatabaseConfigured();
+  if (databaseError) {
+    return databaseError;
+  }
+
+  try {
+    const examples = await listExamplesService();
+
+    return NextResponse.json({ data: examples });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request) {
-  if (!env.DATABASE_URL) {
-    return NextResponse.json(
-      { error: "DATABASE_URL is not configured." },
-      { status: 503 },
-    );
+  const databaseError = ensureDatabaseConfigured();
+  if (databaseError) {
+    return databaseError;
   }
 
-  const body = await request.json();
-  const parsed = createExampleSchema.parse(body);
-  const created = await createExampleService(parsed);
+  try {
+    const body = await request.json();
+    const parsed = createExampleSchema.parse(body);
+    const created = await createExampleService(parsed);
 
-  return NextResponse.json({ data: created }, { status: 201 });
+    return NextResponse.json({ data: created }, { status: 201 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
 }

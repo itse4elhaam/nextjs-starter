@@ -1,11 +1,15 @@
 import { createExampleFormAction } from "@/actions/example-actions";
 import { Button } from "@/components/ui/button";
 import { env } from "@/lib/config";
+import type { IExampleDto } from "@/lib/types";
 import { listExamplesService } from "@/services/example-service";
 
 export async function ExamplesServerPanel() {
   const databaseReady = Boolean(env.DATABASE_URL);
-  let examples = [];
+  let examples: IExampleDto[] = [];
+  const dateFormatter = new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+  });
 
   if (databaseReady) {
     try {
@@ -58,7 +62,7 @@ export async function ExamplesServerPanel() {
               <li key={example.id} className="flex items-center gap-2">
                 <span className="font-medium">{example.name}</span>
                 <span className="text-xs text-slate-400">
-                  {new Date(example.createdAt).toLocaleDateString("en-US")}
+                  {dateFormatter.format(new Date(example.createdAt))}
                 </span>
               </li>
             ))}

@@ -16,8 +16,10 @@ function toExampleDto(record: IExampleRecord): IExampleDto {
   };
 }
 
-export async function listExamplesService(): Promise<IExampleDto[]> {
-  const records = await listExamples();
+export async function listExamplesService(
+  limit?: number,
+): Promise<IExampleDto[]> {
+  const records = await listExamples({ limit });
 
   return records.map(toExampleDto);
 }

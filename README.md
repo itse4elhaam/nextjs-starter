@@ -96,19 +96,19 @@ cd my-project
 # Click "Use this template" button on GitHub
 ```
 
-2. **Install dependencies:**
-
-```bash
-bun install
-```
-
-3. **Set up environment variables:**
+2. **Set up environment variables:**
 
 ```bash
 # Copy the example env file
 cp .env.example .env
 
 # Edit .env with your values
+```
+
+3. **Install dependencies:**
+
+```bash
+bun install
 ```
 
 4. **Start the development server:**
@@ -410,7 +410,7 @@ Create a `.env` file in the root directory:
 
 ```env
 # Server-side only (NOT exposed to browser)
-DATABASE_URL=postgres://user:password@localhost:5432/app_db
+DATABASE_URL=postgres://YOUR_USERNAME:YOUR_PASSWORD@localhost:5432/app_db
 PORT=3000
 NODE_ENV=development
 

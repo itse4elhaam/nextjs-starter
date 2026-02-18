@@ -29,11 +29,11 @@ export function createAction<TInput, TOutput>(
   definition: IActionDefinition<TInput, TOutput>,
 ): (rawInput: unknown) => Promise<TOutput> {
   return async (rawInput: unknown): Promise<TOutput> => {
-  let context = await getActionContext();
+    let context = await getActionContext();
 
-  if (definition.requireAuth) {
-    context = requireAuthContext(context);
-  }
+    if (definition.requireAuth) {
+      context = requireAuthContext(context);
+    }
 
     const input = definition.parse(rawInput);
 

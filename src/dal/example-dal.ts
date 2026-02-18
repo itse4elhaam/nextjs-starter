@@ -1,5 +1,7 @@
 import "server-only";
 
+import { desc } from "drizzle-orm";
+
 import { getDb } from "@/db";
 import { examples } from "@/db/schema";
 import type { IExampleRecord } from "@/lib/types";
@@ -17,7 +19,7 @@ export async function listExamples(
   return db
     .select()
     .from(examples)
-    .orderBy(examples.createdAt)
+    .orderBy(desc(examples.createdAt))
     .limit(limit);
 }
 
