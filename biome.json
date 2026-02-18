@@ -4,7 +4,18 @@
     "enabled": true
   },
   "files": {
-    "ignore": [".next", "node_modules", "out", "build"]
+    "ignore": [
+      "scripts.local/**",
+      "scripts/**",
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+      "src/components/ui/**",
+      "public/**",
+      "**/*.test.ts"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -12,10 +23,82 @@
     "indentWidth": 2,
     "lineWidth": 80
   },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always"
+    }
+  },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "complexity": {
+        "noExcessiveCognitiveComplexity": {
+          "level": "error",
+          "options": {
+            "maxAllowedComplexity": 15
+          }
+        }
+      },
+      "style": {
+        "noUselessElse": "error",
+        "useNamingConvention": {
+          "level": "error",
+          "options": {
+            "strictCase": false,
+            "requireAscii": false,
+            "conventions": [
+              {
+                "selector": {
+                  "kind": "interface"
+                },
+                "formats": ["PascalCase"],
+                "match": "I[A-Z].*"
+              },
+              {
+                "selector": {
+                  "kind": "typeAlias"
+                },
+                "formats": ["PascalCase"],
+                "match": "T[A-Z].*"
+              }
+            ]
+          }
+        }
+      }
     }
-  }
+  },
+  "overrides": [
+    {
+      "include": ["next.config.mjs", "redirects.mjs"],
+      "formatter": {
+        "lineWidth": 320
+      }
+    },
+    {
+      "include": [
+        "src/lib/constants.ts",
+        "src/lib/config.ts",
+        "src/helpers/api.ts"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNamingConvention": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["src/lib/types.ts", "src/consts/products.ts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noExcessiveCognitiveComplexity": "off"
+          }
+        }
+      }
+    }
+  ]
 }
