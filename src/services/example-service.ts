@@ -1,12 +1,13 @@
 import "server-only";
 
-import { type Result, err, ok } from "neverthrow";
+import { err, ok, type Result } from "neverthrow";
 
 import { createExample, listExamples } from "@/dal/example-dal";
 import { ErrorCode } from "@/lib/enums";
-import { type IAppError, createError } from "@/lib/errors";
+import { createError } from "@/lib/errors";
 import { createExampleSchema } from "@/lib/examples-schema";
 import type {
+  IError,
   IExampleDto,
   IExampleRecord,
   TCreateExampleInput,
@@ -22,7 +23,7 @@ function toExampleDto(record: IExampleRecord): IExampleDto {
 
 export async function listExamplesService(
   limit?: number,
-): Promise<Result<IExampleDto[], IAppError<ErrorCode.DbListFailed>>> {
+): Promise<Result<IExampleDto[], IError<ErrorCode.DbListFailed>>> {
   const recordsResult = await listExamples({ limit });
   if (recordsResult.isErr()) {
     return err(recordsResult.error);
@@ -36,7 +37,7 @@ export async function createExampleService(
 ): Promise<
   Result<
     IExampleDto,
-    IAppError<ErrorCode.DbCreateFailed | ErrorCode.ValidationError>
+    IError<ErrorCode.DbCreateFailed | ErrorCode.ValidationError>
   >
 > {
   const parsed = createExampleSchema.safeParse(input);

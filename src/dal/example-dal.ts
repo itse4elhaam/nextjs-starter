@@ -1,21 +1,21 @@
 import "server-only";
 
 import { desc } from "drizzle-orm";
-import { type Result, ResultAsync, err, ok } from "neverthrow";
+import { err, ok, type Result, ResultAsync } from "neverthrow";
 
 import { getDb } from "@/db";
 import { examples } from "@/db/schema";
 import { ErrorCode } from "@/lib/enums";
-import { type IAppError, createError } from "@/lib/errors";
-import type { IExampleRecord } from "@/lib/types";
+import { createError } from "@/lib/errors";
+import type { IError, IExampleRecord } from "@/lib/types";
 
 export interface IListExamplesOptions {
   limit?: number;
 }
 
-export async function listExamples(
+export function listExamples(
   options: IListExamplesOptions = {},
-): Promise<Result<IExampleRecord[], IAppError<ErrorCode.DbListFailed>>> {
+): ResultAsync<IExampleRecord[], IError<ErrorCode.DbListFailed>> {
   const db = getDb();
   const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
 
@@ -28,7 +28,7 @@ export async function listExamples(
 
 export async function createExample(
   name: string,
-): Promise<Result<IExampleRecord, IAppError<ErrorCode.DbCreateFailed>>> {
+): Promise<Result<IExampleRecord, IError<ErrorCode.DbCreateFailed>>> {
   const db = getDb();
   const createResult = await ResultAsync.fromPromise(
     db.insert(examples).values({ name }).returning(),

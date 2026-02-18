@@ -2,14 +2,14 @@
 
 import "server-only";
 
-import { type Result, err, ok } from "neverthrow";
+import { err, ok, type Result } from "neverthrow";
 import { revalidatePath } from "next/cache";
 
 import { createAction } from "@/actions/action-base";
 import { ErrorCode } from "@/lib/enums";
-import { type IAppError, createError } from "@/lib/errors";
+import { createError } from "@/lib/errors";
 import { createExampleSchema } from "@/lib/examples-schema";
-import type { IExampleDto, TCreateExampleInput } from "@/lib/types";
+import type { IError, IExampleDto, TCreateExampleInput } from "@/lib/types";
 import { createExampleService } from "@/services/example-service";
 
 type TExampleActionErrorCodes =
@@ -21,7 +21,7 @@ function parseExampleFormData(
   rawInput: unknown,
 ): Result<
   TCreateExampleInput,
-  IAppError<ErrorCode.InvalidForm | ErrorCode.ValidationError>
+  IError<ErrorCode.InvalidForm | ErrorCode.ValidationError>
 > {
   if (!(rawInput instanceof FormData)) {
     return err(createError(ErrorCode.InvalidForm, "Invalid form payload."));

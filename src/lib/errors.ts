@@ -1,16 +1,5 @@
 import type { ErrorCode } from "@/lib/enums";
-
-export type TSuccess<T> = {
-  data: T;
-  error: null;
-};
-
-export type TFailure<E> = {
-  data: null;
-  error: E;
-};
-
-export type TResult<T, E = Error> = TSuccess<T> | TFailure<E>;
+import type { IError, TResult } from "@/lib/types";
 
 export async function tryCatch<T, E = Error>(
   promise: Promise<T>,
@@ -23,16 +12,10 @@ export async function tryCatch<T, E = Error>(
   }
 }
 
-export interface IAppError<TCode extends ErrorCode = ErrorCode> {
-  code: TCode;
-  message: string;
-  details?: unknown;
-}
-
 export function createError<TCode extends ErrorCode>(
   code: TCode,
   message: string,
   details?: unknown,
-): IAppError<TCode> {
+): IError<TCode> {
   return { code, message, details };
 }

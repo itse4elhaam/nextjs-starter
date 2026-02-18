@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 
 import { env } from "@/lib/config";
 import { ErrorCode } from "@/lib/enums";
-import type { IAppError } from "@/lib/errors";
 import { createExampleSchema } from "@/lib/examples-schema";
+import type { IError } from "@/lib/types";
 import {
   createExampleService,
   listExamplesService,
@@ -22,7 +22,7 @@ function ensureDatabaseConfigured() {
   return null;
 }
 
-function toErrorResponse(error: IAppError, fallbackStatus: number) {
+function toErrorResponse(error: IError, fallbackStatus: number) {
   const status =
     error.code === ErrorCode.ValidationError ? 400 : fallbackStatus;
 

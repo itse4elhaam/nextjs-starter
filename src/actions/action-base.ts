@@ -1,11 +1,11 @@
 import "server-only";
 
-import { type Result, err, ok } from "neverthrow";
+import { err, ok, type Result } from "neverthrow";
 import { headers } from "next/headers";
 
 import { ErrorCode } from "@/lib/enums";
-import { type IAppError, createError } from "@/lib/errors";
-import type { IActionContext, IActionDefinition } from "@/lib/types";
+import { createError } from "@/lib/errors";
+import type { IActionContext, IActionDefinition, IError } from "@/lib/types";
 
 export async function getActionContext(): Promise<IActionContext> {
   const requestHeaders = await headers();
@@ -20,7 +20,7 @@ export type TAuthErrorCodes = ErrorCode.Unauthorized;
 
 export function requireAuthContext(
   context: IActionContext,
-): Result<IActionContext, IAppError<TAuthErrorCodes>> {
+): Result<IActionContext, IError<TAuthErrorCodes>> {
   if (!context.userId) {
     return err(createError(ErrorCode.Unauthorized, "Login required."));
   }
@@ -32,10 +32,10 @@ export function createAction<TInput, TOutput, TCode extends ErrorCode>(
   definition: IActionDefinition<TInput, TOutput, TCode>,
 ): (
   rawInput: unknown,
-) => Promise<Result<TOutput, IAppError<TCode | TAuthErrorCodes>>> {
+) => Promise<Result<TOutput, IError<TCode | TAuthErrorCodes>>> {
   return async (
     rawInput: unknown,
-  ): Promise<Result<TOutput, IAppError<TCode | TAuthErrorCodes>>> => {
+  ): Promise<Result<TOutput, IError<TCode | TAuthErrorCodes>>> => {
     const context = await getActionContext();
 
     if (definition.requireAuth) {
