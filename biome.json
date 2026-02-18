@@ -33,12 +33,57 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "performance" : {
+        "noAccumulatingSpread": {
+          "level": "error"
+        },
+        "noDelete" : {
+          "level": "error"
+        }
+      },
+      "security": {
+        "noGlobalEval" : {
+          "level": "error"
+        }
+      },
+      "suspicious": {
+        "noImportantInKeyframe": {
+          "level": "error"
+        },
+        "noImplicitAnyLet": {
+          "level": "warn"
+        },
+        "noGlobalIsNan": {
+          "level": "error"
+        },
+        "noFunctionAssign": {
+          "level": "error"
+        },
+        "useAwait": {
+          "level": "error"
+        },
+        "useIsArray": {
+          "level": "error"
+        },
+        "noUnsafeNegation": {
+          "level": "error"
+        },
+        "noReactSpecificProps": {
+          "level": "error"
+        }
+      },
       "complexity": {
         "noExcessiveCognitiveComplexity": {
           "level": "error",
           "options": {
             "maxAllowedComplexity": 15
           }
+        },
+        "noUselessTernary": {
+          "level": "warn"
+        },
+        "noForEach": {
+          "level": "error"
         }
       },
       "style": {
@@ -62,9 +107,21 @@
                 },
                 "formats": ["PascalCase"],
                 "match": "T[A-Z].*"
+              },
+              {
+                "selector": {
+                  "kind": "enum"
+                },
+                "formats": ["PascalCase"]
               }
             ]
           }
+        },
+        "useExportType": {
+          "level": "off"
+        },
+        "useFragmentSyntax": {
+          "level": "error"
         }
       }
     }

@@ -3,6 +3,6 @@
 # this formats the staged files and then updates the index accordingly
 FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
 if [ -n "$FILES" ]; then
-  bunx biome format $FILES --write --files-ignore-unknown
+  bunx biome format $FILES --write --files-ignore-unknown=true
 fi
 git update-index --again
