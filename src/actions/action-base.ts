@@ -2,11 +2,7 @@ import "server-only";
 
 import { headers } from "next/headers";
 
-import type {
-  IActionContext,
-  IActionDefinition,
-  IActionPayload,
-} from "@/lib/types";
+import type { IActionContext, IActionDefinition } from "@/lib/types";
 
 export async function getActionContext(): Promise<IActionContext> {
   const requestHeaders = await headers();
