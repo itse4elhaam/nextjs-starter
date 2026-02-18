@@ -172,7 +172,6 @@ nextjs-starter/
 │       ├── constants.ts      # App constants (HTTP_VERBS, etc.)
 │       ├── types.ts          # TypeScript interfaces/types
 │       ├── examples-schema.ts
-│       ├── examples-types.ts
 │       ├── utils.ts          # Utility functions (cn, isClientSide)
 │       └── index.ts          # Barrel export
 ├── .env.example              # Example environment variables
