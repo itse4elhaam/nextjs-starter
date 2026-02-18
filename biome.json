@@ -1,27 +1,38 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "organizeImports": {
-    "enabled": true
+  "$schema": "https://biomejs.dev/schemas/2.4.2/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   },
   "files": {
-    "ignore": [
-      "scripts.local/**",
-      "scripts/**",
-      "node_modules/**",
-      ".next/**",
-      "out/**",
-      "build/**",
-      "next-env.d.ts",
-      "src/components/ui/**",
-      "public/**",
-      "**/*.test.ts"
+    "includes": [
+      "**",
+      "!**/scripts.local",
+      "!**/scripts",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/out",
+      "!**/build",
+      "!**/next-env.d.ts",
+      "!**/src/components/ui",
+      "!**/public",
+      "!**/*.test.ts"
     ]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineWidth": 80
+    "lineWidth": 80,
+    "formatWithErrors": false
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
   },
   "javascript": {
     "formatter": {
@@ -128,7 +139,7 @@
   },
   "overrides": [
     {
-      "include": ["src/**/*.tsx", "src/**/*.jsx"],
+      "includes": ["**/src/**/*.tsx", "**/src/**/*.jsx"],
       "linter": {
         "rules": {
           "suspicious": {
@@ -138,16 +149,17 @@
       }
     },
     {
-      "include": ["next.config.mjs", "redirects.mjs"],
+      "includes": ["**/next.config.mjs", "**/redirects.mjs"],
       "formatter": {
         "lineWidth": 320
       }
     },
     {
-      "include": [
-        "src/lib/constants.ts",
-        "src/lib/config.ts",
-        "src/helpers/api.ts"
+      "includes": [
+        "**/src/lib/constants.ts",
+        "**/src/lib/config.ts",
+        "**/src/helpers/api.ts",
+        "**/src/lib/env.ts"
       ],
       "linter": {
         "rules": {
@@ -158,7 +170,17 @@
       }
     },
     {
-      "include": ["src/lib/types.ts", "src/consts/products.ts"],
+      "includes": ["**/src/helpers/cookies.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noDocumentCookie": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/src/lib/types.ts", "**/src/consts/products.ts"],
       "linter": {
         "rules": {
           "complexity": {
