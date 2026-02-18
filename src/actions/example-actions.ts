@@ -6,8 +6,7 @@ import { revalidatePath } from "next/cache";
 
 import { createAction } from "@/actions/action-base";
 import { createExampleSchema } from "@/lib/examples-schema";
-import type { TCreateExampleInput } from "@/lib/examples-schema";
-import type { IExampleDto } from "@/lib/examples-types";
+import type { IExampleDto, TCreateExampleInput } from "@/lib/types";
 import { createExampleService } from "@/services/example-service";
 
 function parseExampleFormData(rawInput: unknown): TCreateExampleInput {

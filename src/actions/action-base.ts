@@ -2,21 +2,11 @@ import "server-only";
 
 import { headers } from "next/headers";
 
-export interface IActionContext {
-  userId: string | null;
-  role: string | null;
-}
-
-export interface IActionPayload<TInput> {
-  input: TInput;
-  context: IActionContext;
-}
-
-export interface IActionDefinition<TInput, TOutput> {
-  parse: (rawInput: unknown) => TInput;
-  handler: (payload: IActionPayload<TInput>) => Promise<TOutput>;
-  requireAuth?: boolean;
-}
+import type {
+  IActionContext,
+  IActionDefinition,
+  IActionPayload,
+} from "@/lib/types";
 
 export async function getActionContext(): Promise<IActionContext> {
   const requestHeaders = await headers();

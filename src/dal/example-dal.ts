@@ -2,7 +2,7 @@ import "server-only";
 
 import { getDb } from "@/db";
 import { examples } from "@/db/schema";
-import type { IExampleRecord } from "@/lib/examples-types";
+import type { IExampleRecord } from "@/lib/types";
 
 export async function listExamples(): Promise<IExampleRecord[]> {
   const db = getDb();

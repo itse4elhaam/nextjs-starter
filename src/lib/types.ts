@@ -14,3 +14,39 @@ export interface IFetchResponse<T = unknown> {
   status: number;
   error: string | null;
 }
+
+export interface IExampleRecord {
+  id: number;
+  name: string;
+  createdAt: Date;
+}
+
+export interface IExampleDto {
+  id: number;
+  name: string;
+  createdAt: string;
+}
+
+export interface IActionContext {
+  userId: string | null;
+  role: string | null;
+}
+
+export interface IActionPayload<TInput> {
+  input: TInput;
+  context: IActionContext;
+}
+
+export interface IActionDefinition<TInput, TOutput> {
+  parse: (rawInput: unknown) => TInput;
+  handler: (payload: IActionPayload<TInput>) => Promise<TOutput>;
+  requireAuth?: boolean;
+}
+
+export interface IExamplesResponse {
+  data: IExampleDto[];
+}
+
+export type TCreateExampleInput = {
+  name: string;
+};

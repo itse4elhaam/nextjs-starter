@@ -1,8 +1,11 @@
 import "server-only";
 
 import { createExample, listExamples } from "@/dal/example-dal";
-import type { TCreateExampleInput } from "@/lib/examples-schema";
-import type { IExampleDto, IExampleRecord } from "@/lib/examples-types";
+import type {
+  IExampleDto,
+  IExampleRecord,
+  TCreateExampleInput,
+} from "@/lib/types";
 
 function toExampleDto(record: IExampleRecord): IExampleDto {
   return {

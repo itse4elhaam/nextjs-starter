@@ -5,11 +5,7 @@ import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { fetcher } from "@/helpers/api";
 import { HTTP_VERBS } from "@/lib/constants";
-import type { IExampleDto } from "@/lib/examples-types";
-
-interface IExamplesResponse {
-  data: IExampleDto[];
-}
+import type { IExampleDto, IExamplesResponse } from "@/lib/types";
 
 export function ExamplesClientPanel() {
   const [examples, setExamples] = useState<IExampleDto[]>([]);
