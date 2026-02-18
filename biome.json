@@ -33,16 +33,16 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "performance" : {
+      "performance": {
         "noAccumulatingSpread": {
           "level": "error"
         },
-        "noDelete" : {
+        "noDelete": {
           "level": "error"
         }
       },
       "security": {
-        "noGlobalEval" : {
+        "noGlobalEval": {
           "level": "error"
         }
       },
@@ -127,6 +127,16 @@
     }
   },
   "overrides": [
+    {
+      "include": ["src/**/*.tsx", "src/**/*.jsx"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noReactSpecificProps": "off"
+          }
+        }
+      }
+    },
     {
       "include": ["next.config.mjs", "redirects.mjs"],
       "formatter": {

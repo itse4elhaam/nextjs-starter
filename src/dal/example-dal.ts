@@ -10,7 +10,7 @@ export interface IListExamplesOptions {
   limit?: number;
 }
 
-export async function listExamples(
+export function listExamples(
   options: IListExamplesOptions = {},
 ): Promise<IExampleRecord[]> {
   const db = getDb();
