@@ -154,3 +154,8 @@ Follow strict typing conventions. Avoid implicit `any` (TypeScript will fail).
 - No `.github/copilot-instructions.md` found.
 
 If these files are added later, update this document to mirror their rules.
+
+## Must follow rules
+
+- NEVER use throw, use the error pattern being followed in the codebase
+- Ensure all types are in the `src/lib/types.ts` file, enums in `src/lib/enums.ts` and constants in `src/lib/constants.ts`
