@@ -1,6 +1,10 @@
 import "server-only";
 
+import { type Result, err, ok } from "neverthrow";
+
 import { createExample, listExamples } from "@/dal/example-dal";
+import { ErrorCode } from "@/lib/enums";
+import { type IAppError, createError } from "@/lib/errors";
 import { createExampleSchema } from "@/lib/examples-schema";
 import type {
   IExampleDto,
@@ -18,17 +22,38 @@ function toExampleDto(record: IExampleRecord): IExampleDto {
 
 export async function listExamplesService(
   limit?: number,
-): Promise<IExampleDto[]> {
-  const records = await listExamples({ limit });
+): Promise<Result<IExampleDto[], IAppError<ErrorCode.DbListFailed>>> {
+  const recordsResult = await listExamples({ limit });
+  if (recordsResult.isErr()) {
+    return err(recordsResult.error);
+  }
 
-  return records.map(toExampleDto);
+  return ok(recordsResult.value.map(toExampleDto));
 }
 
 export async function createExampleService(
   input: TCreateExampleInput | unknown,
-): Promise<IExampleDto> {
-  const parsed = createExampleSchema.parse(input);
-  const record = await createExample(parsed.name);
+): Promise<
+  Result<
+    IExampleDto,
+    IAppError<ErrorCode.DbCreateFailed | ErrorCode.ValidationError>
+  >
+> {
+  const parsed = createExampleSchema.safeParse(input);
+  if (!parsed.success) {
+    return err(
+      createError(
+        ErrorCode.ValidationError,
+        "Invalid example input.",
+        parsed.error,
+      ),
+    );
+  }
 
-  return toExampleDto(record);
+  const recordResult = await createExample(parsed.data.name);
+  if (recordResult.isErr()) {
+    return err(recordResult.error);
+  }
+
+  return ok(toExampleDto(recordResult.value));
 }

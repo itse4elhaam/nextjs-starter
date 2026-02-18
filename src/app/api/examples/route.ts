@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 
 import { env } from "@/lib/config";
+import { ErrorCode } from "@/lib/enums";
+import type { IAppError } from "@/lib/errors";
 import { createExampleSchema } from "@/lib/examples-schema";
 import {
   createExampleService,
@@ -20,21 +22,25 @@ function ensureDatabaseConfigured() {
   return null;
 }
 
+function toErrorResponse(error: IAppError, fallbackStatus: number) {
+  const status =
+    error.code === ErrorCode.ValidationError ? 400 : fallbackStatus;
+
+  return NextResponse.json({ error: error.message }, { status });
+}
+
 export async function GET() {
   const databaseError = ensureDatabaseConfigured();
   if (databaseError) {
     return databaseError;
   }
 
-  try {
-    const examples = await listExamplesService();
-
-    return NextResponse.json({ data: examples });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-
-    return NextResponse.json({ error: message }, { status: 500 });
+  const examplesResult = await listExamplesService();
+  if (examplesResult.isErr()) {
+    return toErrorResponse(examplesResult.error, 500);
   }
+
+  return NextResponse.json({ data: examplesResult.value });
 }
 
 export async function POST(request: Request) {
@@ -43,15 +49,19 @@ export async function POST(request: Request) {
     return databaseError;
   }
 
-  try {
-    const body = await request.json();
-    const parsed = createExampleSchema.parse(body);
-    const created = await createExampleService(parsed);
-
-    return NextResponse.json({ data: created }, { status: 201 });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-
-    return NextResponse.json({ error: message }, { status: 400 });
+  const body = await request.json();
+  const parsed = createExampleSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Invalid request payload." },
+      { status: 400 },
+    );
   }
+
+  const createdResult = await createExampleService(parsed.data);
+  if (createdResult.isErr()) {
+    return toErrorResponse(createdResult.error, 500);
+  }
+
+  return NextResponse.json({ data: createdResult.value }, { status: 201 });
 }

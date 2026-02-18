@@ -1,4 +1,8 @@
+import type { Result as NeverthrowResult } from "neverthrow";
+
 import type { HTTP_VERBS } from "./constants";
+import type { ErrorCode } from "./enums";
+import type { TResult as AppResult, IAppError } from "./errors";
 import type { TCreateExampleInput } from "./examples-schema";
 
 export interface IFetchOptions<TBody = unknown> {
@@ -38,11 +42,22 @@ export interface IActionPayload<TInput> {
   context: IActionContext;
 }
 
-export interface IActionDefinition<TInput, TOutput> {
-  parse: (rawInput: unknown) => TInput;
-  handler: (payload: IActionPayload<TInput>) => Promise<TOutput>;
+export interface IActionDefinition<
+  TInput,
+  TOutput,
+  TCode extends ErrorCode = ErrorCode,
+> {
+  parse: (rawInput: unknown) => NeverthrowResult<TInput, IAppError<TCode>>;
+  handler: (
+    payload: IActionPayload<TInput>,
+  ) => Promise<NeverthrowResult<TOutput, IAppError<TCode>>>;
   requireAuth?: boolean;
 }
+
+export type TActionResult<
+  TOutput,
+  TCode extends ErrorCode = ErrorCode,
+> = AppResult<TOutput, IAppError<TCode>>;
 
 export interface IExamplesResponse {
   data: IExampleDto[];

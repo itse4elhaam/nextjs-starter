@@ -111,6 +111,22 @@ Server actions are public endpoints. Treat them like APIs:
 The wrapper in `src/actions/action-base.ts` provides a central place to enforce
 auth and context extraction for every action.
 
+## Error Handling Standard
+
+We avoid throwing for expected failures. Use `neverthrow` and the shared
+helpers in `src/lib/errors.ts`:
+
+- **DAL/Services** return `Result<T, IAppError>`.
+- **Server actions** return `Result<T, IAppError>` and never throw for expected
+  errors.
+- **API routes** map `IAppError` to structured JSON responses.
+
+Use `ErrorCode` from `src/lib/enums.ts` for all error codes so they stay
+consistent across layers.
+
+Linting note: Biome does not currently provide a "no-throw" rule. We enforce
+this via code review and by requiring Result-based returns in new code.
+
 ## Examples Included
 
 - DB schema: `src/db/schema.ts`

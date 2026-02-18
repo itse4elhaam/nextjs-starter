@@ -12,10 +12,9 @@ export async function ExamplesServerPanel() {
   });
 
   if (databaseReady) {
-    try {
-      examples = await listExamplesService();
-    } catch {
-      examples = [];
+    const result = await listExamplesService();
+    if (result.isOk()) {
+      examples = result.value;
     }
   }
 

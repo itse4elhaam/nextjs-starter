@@ -2,37 +2,66 @@
 
 import "server-only";
 
+import { type Result, err, ok } from "neverthrow";
 import { revalidatePath } from "next/cache";
 
 import { createAction } from "@/actions/action-base";
+import { ErrorCode } from "@/lib/enums";
+import { type IAppError, createError } from "@/lib/errors";
 import { createExampleSchema } from "@/lib/examples-schema";
 import type { IExampleDto, TCreateExampleInput } from "@/lib/types";
 import { createExampleService } from "@/services/example-service";
 
-function parseExampleFormData(rawInput: unknown): TCreateExampleInput {
+type TExampleActionErrorCodes =
+  | ErrorCode.InvalidForm
+  | ErrorCode.ValidationError
+  | ErrorCode.DbCreateFailed;
+
+function parseExampleFormData(
+  rawInput: unknown,
+): Result<
+  TCreateExampleInput,
+  IAppError<ErrorCode.InvalidForm | ErrorCode.ValidationError>
+> {
   if (!(rawInput instanceof FormData)) {
-    throw new Error("Invalid form payload.");
+    return err(createError(ErrorCode.InvalidForm, "Invalid form payload."));
   }
 
   const name = rawInput.get("name");
 
   if (typeof name !== "string") {
-    throw new Error("Invalid name field.");
+    return err(createError(ErrorCode.InvalidForm, "Invalid name field."));
   }
 
-  return createExampleSchema.parse({ name });
+  const parsed = createExampleSchema.safeParse({ name });
+  if (!parsed.success) {
+    return err(
+      createError(
+        ErrorCode.ValidationError,
+        "Invalid example name.",
+        parsed.error,
+      ),
+    );
+  }
+
+  return ok(parsed.data);
 }
 
 export const createExampleAction = createAction<
   TCreateExampleInput,
-  IExampleDto
+  IExampleDto,
+  TExampleActionErrorCodes
 >({
   parse: parseExampleFormData,
   handler: async ({ input }) => {
-    const created = await createExampleService(input);
+    const createdResult = await createExampleService(input);
+    if (createdResult.isErr()) {
+      return err(createdResult.error);
+    }
+
     revalidatePath("/");
 
-    return created;
+    return ok(createdResult.value);
   },
 });
 
