@@ -4,10 +4,21 @@ import { getDb } from "@/db";
 import { examples } from "@/db/schema";
 import type { IExampleRecord } from "@/lib/types";
 
-export async function listExamples(): Promise<IExampleRecord[]> {
-  const db = getDb();
+export interface IListExamplesOptions {
+  limit?: number;
+}
 
-  return db.select().from(examples).orderBy(examples.createdAt);
+export async function listExamples(
+  options: IListExamplesOptions = {},
+): Promise<IExampleRecord[]> {
+  const db = getDb();
+  const limit = Math.max(1, Math.min(options.limit ?? 50, 100));
+
+  return db
+    .select()
+    .from(examples)
+    .orderBy(examples.createdAt)
+    .limit(limit);
 }
 
 export async function createExample(name: string): Promise<IExampleRecord> {

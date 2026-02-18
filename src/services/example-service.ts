@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createExample, listExamples } from "@/dal/example-dal";
+import { createExampleSchema } from "@/lib/examples-schema";
 import type {
   IExampleDto,
   IExampleRecord,
@@ -22,9 +23,10 @@ export async function listExamplesService(): Promise<IExampleDto[]> {
 }
 
 export async function createExampleService(
-  input: TCreateExampleInput,
+  input: TCreateExampleInput | unknown,
 ): Promise<IExampleDto> {
-  const record = await createExample(input.name);
+  const parsed = createExampleSchema.parse(input);
+  const record = await createExample(parsed.name);
 
   return toExampleDto(record);
 }

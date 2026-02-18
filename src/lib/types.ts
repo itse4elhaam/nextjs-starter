@@ -1,4 +1,5 @@
 import type { HTTP_VERBS } from "./constants";
+import type { TCreateExampleInput } from "./examples-schema";
 
 export interface IFetchOptions<TBody = unknown> {
   url: string;
@@ -47,6 +48,4 @@ export interface IExamplesResponse {
   data: IExampleDto[];
 }
 
-export type TCreateExampleInput = {
-  name: string;
-};
+export type { TCreateExampleInput };

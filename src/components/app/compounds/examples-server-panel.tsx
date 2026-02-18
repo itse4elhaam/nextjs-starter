@@ -5,7 +5,15 @@ import { listExamplesService } from "@/services/example-service";
 
 export async function ExamplesServerPanel() {
   const databaseReady = Boolean(env.DATABASE_URL);
-  const examples = databaseReady ? await listExamplesService() : [];
+  let examples = [];
+
+  if (databaseReady) {
+    try {
+      examples = await listExamplesService();
+    } catch {
+      examples = [];
+    }
+  }
 
   return (
     <section className="space-y-4 rounded-lg border border-slate-200 bg-white/70 p-6">
@@ -24,7 +32,11 @@ export async function ExamplesServerPanel() {
         </p>
       ) : (
         <form action={createExampleFormAction} className="flex flex-wrap gap-3">
+          <label className="sr-only" htmlFor="example-name">
+            Example name
+          </label>
           <input
+            id="example-name"
             name="name"
             placeholder="Example name"
             required
@@ -46,7 +58,7 @@ export async function ExamplesServerPanel() {
               <li key={example.id} className="flex items-center gap-2">
                 <span className="font-medium">{example.name}</span>
                 <span className="text-xs text-slate-400">
-                  {example.createdAt}
+                  {new Date(example.createdAt).toLocaleDateString("en-US")}
                 </span>
               </li>
             ))}

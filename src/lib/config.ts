@@ -5,7 +5,9 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url().optional(),
     PORT: z.coerce.number().default(3000),
-    NODE_ENV: z.enum(["production", "development"]).default("development"),
+    NODE_ENV: z
+      .enum(["production", "development", "test"])
+      .default("development"),
   },
 
   clientPrefix: "NEXT_PUBLIC_",

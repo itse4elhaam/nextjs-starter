@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { fetcher } from "@/helpers/api";
@@ -12,24 +12,38 @@ export function ExamplesClientPanel() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const dateFormatter = useMemo(
+    () => new Intl.DateTimeFormat("en", { dateStyle: "medium" }),
+    [],
+  );
+
   const handleFetch = useCallback(async () => {
     setLoading(true);
     setError(null);
 
-    const response = await fetcher<null, IExamplesResponse>({
-      url: "/api/examples",
-      method: HTTP_VERBS.get,
-    });
+    try {
+      const response = await fetcher<null, IExamplesResponse>({
+        url: "/api/examples",
+        method: HTTP_VERBS.get,
+      });
 
-    if (!response.ok || !response.data) {
-      setError(response.error ?? "Failed to load examples.");
+      if (!response.ok || !response.data) {
+        setError(response.error ?? "Failed to load examples.");
+        setExamples([]);
+        return;
+      }
+
+      setExamples(response.data.data);
+    } catch (fetchError) {
+      const message =
+        fetchError instanceof Error
+          ? fetchError.message
+          : "Failed to load examples.";
+      setError(message);
       setExamples([]);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setExamples(response.data.data);
-    setLoading(false);
   }, []);
 
   return (
@@ -48,7 +62,10 @@ export function ExamplesClientPanel() {
       </Button>
 
       {error ? (
-        <p className="rounded-md border border-rose-200 bg-rose-50 p-3 text-sm text-rose-900">
+        <p
+          role="alert"
+          className="rounded-md border border-rose-200 bg-rose-50 p-3 text-sm text-rose-900"
+        >
           {error}
         </p>
       ) : null}
@@ -63,7 +80,7 @@ export function ExamplesClientPanel() {
               <li key={example.id} className="flex items-center gap-2">
                 <span className="font-medium">{example.name}</span>
                 <span className="text-xs text-slate-400">
-                  {example.createdAt}
+                  {dateFormatter.format(new Date(example.createdAt))}
                 </span>
               </li>
             ))}

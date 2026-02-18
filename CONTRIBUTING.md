@@ -6,6 +6,7 @@ code quality tooling. Follow these rules to keep the stack consistent.
 ## Quick Start
 
 ```bash
+cp .env.example .env
 bun install
 bun run dev
 ```
