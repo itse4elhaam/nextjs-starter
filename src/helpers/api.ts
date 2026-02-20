@@ -43,6 +43,16 @@ export async function fetcher<TRequest = unknown, TResponse = unknown>({
       error: null,
     };
   } catch (error) {
+    try {
+      const { captureException } = await import("@sentry/nextjs");
+      captureException(error);
+    } catch (sentryError) {
+      const message =
+        sentryError instanceof Error
+          ? sentryError.message
+          : String(sentryError);
+      console.warn("Sentry capture failed", message);
+    }
     const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       ok: false,

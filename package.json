@@ -17,6 +17,7 @@
     "type-check": "mkdir -p .next/types && printf '%s\n' 'import type { ReactNode } from \"react\";' 'export type AppRoutes = string;' 'export type AppRouteHandlerRoutes = string;' 'export type LayoutRoutes = string;' 'export type ParamMap = Record<string, Record<string, string>>;' 'export type LayoutProps<Route extends LayoutRoutes = LayoutRoutes> = { params: Promise<ParamMap[Route]>; children: ReactNode; };' 'declare global { type LayoutProps<Route extends LayoutRoutes = LayoutRoutes> = { params: Promise<ParamMap[Route]>; children: ReactNode; }; }' > .next/types/routes.d.ts && bunx tsc --noEmit"
   },
   "dependencies": {
+    "@sentry/nextjs": "^8.48.0",
     "@radix-ui/react-slot": "^1.2.3",
     "@t3-oss/env-core": "^0.13.6",
     "class-variance-authority": "^0.7.1",

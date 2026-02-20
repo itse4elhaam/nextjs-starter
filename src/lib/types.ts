@@ -1,12 +1,11 @@
 import type { Result as NeverthrowResult } from "neverthrow";
 
-import type { HTTP_VERBS } from "./constants";
-import type { ErrorCode } from "./enums";
+import type { ErrorCode, HttpVerb } from "./enums";
 import type { TCreateExampleInput } from "./examples-schema";
 
 export interface IFetchOptions<TBody = unknown> {
   url: string;
-  method: HTTP_VERBS;
+  method: HttpVerb;
   token?: string;
   body?: TBody;
   headers?: Record<string, string>;
@@ -80,4 +79,22 @@ export interface IError<TCode extends ErrorCode = ErrorCode> {
   code: TCode;
   message: string;
   details?: unknown;
+}
+
+// SEO Types
+
+export interface ISeoConfig {
+  title: string;
+  description: string;
+  url: string;
+  image?: string;
+  type?: "website" | "article";
+  publishedTime?: string;
+  author?: string;
+  noIndex?: boolean;
+  noFollow?: boolean;
+}
+
+export interface IJsonLdScript {
+  __html: string;
 }

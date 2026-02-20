@@ -14,9 +14,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import { buildSeoMetadata, getSiteUrl } from "@/lib/seo";
+
 export const metadata: Metadata = {
-  title: "Nextjs Starter Kit",
-  description: "Contains code for Nextjs starter kit",
+  ...buildSeoMetadata({
+    title: "Nextjs Starter Kit",
+    description: "Contains code for Nextjs starter kit",
+    url: "/",
+  }),
+  metadataBase: new URL(getSiteUrl()),
 };
 
 export default function RootLayout({

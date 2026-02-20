@@ -5,3 +5,21 @@ export enum ErrorCode {
   DbCreateFailed = "DB_CREATE_FAILED",
   InvalidForm = "INVALID_FORM",
 }
+
+export enum HttpVerb {
+  Get = "GET",
+  Post = "POST",
+  Delete = "DELETE",
+  Put = "PUT",
+  Patch = "PATCH",
+}
+
+export enum ChangeFrequency {
+  Always = "always",
+  Hourly = "hourly",
+  Daily = "daily",
+  Weekly = "weekly",
+  Monthly = "monthly",
+  Yearly = "yearly",
+  Never = "never",
+}

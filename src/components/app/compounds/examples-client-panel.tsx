@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { fetcher } from "@/helpers/api";
-import { HTTP_VERBS } from "@/lib/constants";
+import { HttpVerb } from "@/lib/enums";
 import type { IExampleDto, IExamplesResponse } from "@/lib/types";
 
 export function ExamplesClientPanel() {
@@ -24,7 +24,7 @@ export function ExamplesClientPanel() {
     try {
       const response = await fetcher<null, IExamplesResponse>({
         url: "/api/examples",
-        method: HTTP_VERBS.get,
+        method: HttpVerb.Get,
       });
 
       if (!response.ok || !response.data) {

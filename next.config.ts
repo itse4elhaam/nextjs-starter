@@ -1,3 +1,4 @@
+import { withSentryConfig } from "@sentry/nextjs";
 import { createJiti } from "jiti";
 import type { NextConfig } from "next";
 
@@ -9,7 +10,26 @@ async function runEnvValidation() {
 runEnvValidation();
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "2mb",
+    },
+  },
 };
 
-export default nextConfig;
+const shouldEnableSentry = Boolean(
+  process.env.SENTRY_AUTH_TOKEN &&
+    process.env.SENTRY_ORG &&
+    process.env.SENTRY_PROJECT,
+);
+
+const sentryConfig = {
+  disableLogger: true,
+  silent: !process.env.CI,
+};
+
+const exportConfig = shouldEnableSentry
+  ? withSentryConfig(nextConfig, sentryConfig)
+  : nextConfig;
+
+export default exportConfig;
