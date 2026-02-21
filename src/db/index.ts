@@ -16,8 +16,10 @@ export function getDb(): ReturnType<typeof drizzle> {
     throw new Error("DATABASE_URL is required to initialize the database.");
   }
 
+  // Set DATABASE_POOL_SIZE=1 for serverless/edge deployments to avoid
+  // connection exhaustion. Defaults to 10 for traditional server environments.
   const queryClient = postgres(env.DATABASE_URL, {
-    max: 1,
+    max: env.DATABASE_POOL_SIZE,
   });
   dbInstance = drizzle(queryClient);
 
