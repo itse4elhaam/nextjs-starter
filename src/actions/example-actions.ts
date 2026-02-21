@@ -27,13 +27,9 @@ function parseExampleFormData(
     return err(createError(ErrorCode.InvalidForm, "Invalid form payload."));
   }
 
-  const name = rawInput.get("name");
-
-  if (typeof name !== "string") {
-    return err(createError(ErrorCode.InvalidForm, "Invalid name field."));
-  }
-
-  const parsed = createExampleSchema.safeParse({ name });
+  const parsed = createExampleSchema.safeParse(
+    Object.fromEntries(rawInput.entries()),
+  );
   if (!parsed.success) {
     return err(
       createError(
@@ -66,7 +62,12 @@ export const createExampleAction = createAction<
 });
 
 export async function createExampleFormAction(
+  _prevState: unknown,
   formData: FormData,
-): Promise<void> {
-  await createExampleAction(formData);
+): Promise<{ success: boolean; error?: string }> {
+  const result = await createExampleAction(formData);
+  if (result.isErr()) {
+    return { success: false, error: result.error.message };
+  }
+  return { success: true };
 }
