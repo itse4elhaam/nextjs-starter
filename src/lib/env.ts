@@ -4,6 +4,7 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url().optional(),
+    DATABASE_POOL_SIZE: z.coerce.number().default(10),
     PORT: z.coerce.number().default(3000),
     NODE_ENV: z
       .enum(["production", "development", "test"])

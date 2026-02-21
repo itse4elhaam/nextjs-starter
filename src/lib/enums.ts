@@ -4,6 +4,7 @@ export enum ErrorCode {
   DbListFailed = "DB_LIST_FAILED",
   DbCreateFailed = "DB_CREATE_FAILED",
   InvalidForm = "INVALID_FORM",
+  InternalError = "INTERNAL_ERROR",
 }
 
 export enum HttpVerb {
