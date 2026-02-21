@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { env } from "@/lib/config";
@@ -62,6 +63,8 @@ export async function POST(request: Request) {
   if (createdResult.isErr()) {
     return toErrorResponse(createdResult.error, 500);
   }
+
+  revalidatePath("/");
 
   return NextResponse.json({ data: createdResult.value }, { status: 201 });
 }
