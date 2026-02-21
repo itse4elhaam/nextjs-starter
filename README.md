@@ -138,7 +138,7 @@ nextjs-starter/
 │   ├── app/                    # Next.js App Router
 │   │   ├── globals.css        # Global styles + Tailwind imports
 │   │   ├── layout.tsx         # Root layout component
-│   │   └── page.tsx           # Home page
+│   │   ├── page.tsx           # Home page
 │   │   └── api/examples/route.ts # Route handler example
 │   ├── components/
 │   │   ├── app/               # Application-specific components

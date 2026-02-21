@@ -33,7 +33,7 @@ bun run db:studio
 
 We enforce a strict layering model. **UI must never import DB or DAL directly.**
 
-```
+```text
 src/db/          -> DB client + schema
 src/dal/         -> pure data access (no auth/validation)
 src/services/    -> business logic, auth, transactions
