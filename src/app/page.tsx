@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { ExamplesClientPanel } from "@/components/app/compounds/examples-client-panel";
 import { ExamplesServerPanel } from "@/components/app/compounds/examples-server-panel";
 
@@ -19,7 +21,15 @@ export default function Home() {
         </header>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <ExamplesServerPanel />
+          <Suspense
+            fallback={
+              <div className="animate-pulse rounded-lg border border-slate-200 bg-white/70 p-6 text-sm text-slate-400">
+                Loading server examples…
+              </div>
+            }
+          >
+            <ExamplesServerPanel />
+          </Suspense>
           <ExamplesClientPanel />
         </div>
       </main>

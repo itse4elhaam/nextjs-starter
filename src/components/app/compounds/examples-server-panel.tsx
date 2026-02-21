@@ -1,15 +1,15 @@
-import { createExampleFormAction } from "@/actions/example-actions";
-import { Button } from "@/components/ui/button";
 import { env } from "@/lib/config";
 import type { IExampleDto } from "@/lib/types";
 import { listExamplesService } from "@/services/example-service";
+import { ExampleForm } from "./example-form";
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "medium",
+});
 
 export async function ExamplesServerPanel() {
   const databaseReady = Boolean(env.DATABASE_URL);
   let examples: IExampleDto[] = [];
-  const dateFormatter = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-  });
 
   if (databaseReady) {
     const result = await listExamplesService();
@@ -34,19 +34,7 @@ export async function ExamplesServerPanel() {
           Set <code>DATABASE_URL</code> to enable Drizzle examples.
         </p>
       ) : (
-        <form action={createExampleFormAction} className="flex flex-wrap gap-3">
-          <label className="sr-only" htmlFor="example-name">
-            Example name
-          </label>
-          <input
-            id="example-name"
-            name="name"
-            placeholder="Example name"
-            required
-            className="w-full min-w-[220px] flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm"
-          />
-          <Button type="submit">Create Example</Button>
-        </form>
+        <ExampleForm />
       )}
 
       <div className="space-y-2">
