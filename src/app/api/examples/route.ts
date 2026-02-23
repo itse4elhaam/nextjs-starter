@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 import { env } from "@/lib/config";
 import { ErrorCode } from "@/lib/enums";
+import { tryCatch } from "@/lib/errors";
 import { createExampleSchema } from "@/lib/examples-schema";
 import type { IError } from "@/lib/types";
 import {
@@ -10,6 +11,8 @@ import {
   listExamplesService,
 } from "@/services/example-service";
 
+// ISR: cache GET responses for 60 s. POST handler calls revalidatePath("/")
+// to purge the cache immediately after a successful mutation.
 export const revalidate = 60;
 
 function ensureDatabaseConfigured() {
@@ -50,7 +53,14 @@ export async function POST(request: Request) {
     return databaseError;
   }
 
-  const body = await request.json();
+  const jsonResult = await tryCatch(request.json());
+  if (jsonResult.error !== null) {
+    return NextResponse.json(
+      { error: "Invalid JSON payload." },
+      { status: 400 },
+    );
+  }
+  const body = jsonResult.data;
   const parsed = createExampleSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(

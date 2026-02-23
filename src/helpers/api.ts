@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/nextjs";
+
 import type { IFetchOptions, IFetchResponse } from "@/lib/types";
 
 export async function fetcher<TRequest = unknown, TResponse = unknown>({
@@ -9,7 +11,7 @@ export async function fetcher<TRequest = unknown, TResponse = unknown>({
 }: IFetchOptions<TRequest>): Promise<IFetchResponse<TResponse>> {
   try {
     const configHeaders: HeadersInit = {
-      "Content-Type": "application/json",
+      ...(body !== undefined && { "Content-Type": "application/json" }),
       ...(token && { Authorization: `Bearer ${token}` }),
       ...headers,
     };
@@ -32,7 +34,13 @@ export async function fetcher<TRequest = unknown, TResponse = unknown>({
         ok: false,
         status: response.status,
         data: data,
-        error: data?.toString() || response.statusText,
+        error:
+          (data !== null &&
+          typeof data === "object" &&
+          "error" in data &&
+          typeof (data as Record<string, unknown>).error === "string"
+            ? ((data as Record<string, unknown>).error as string)
+            : null) ?? response.statusText,
       };
     }
 
@@ -43,16 +51,7 @@ export async function fetcher<TRequest = unknown, TResponse = unknown>({
       error: null,
     };
   } catch (error) {
-    try {
-      const { captureException } = await import("@sentry/nextjs");
-      captureException(error);
-    } catch (sentryError) {
-      const message =
-        sentryError instanceof Error
-          ? sentryError.message
-          : String(sentryError);
-      console.warn("Sentry capture failed", message);
-    }
+    Sentry.captureException(error);
     const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       ok: false,
