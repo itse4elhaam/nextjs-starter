@@ -5,7 +5,12 @@ import { headers } from "next/headers";
 
 import { ErrorCode } from "@/lib/enums";
 import { createError } from "@/lib/errors";
-import type { IActionContext, IActionDefinition, IError } from "@/lib/types";
+import type {
+  IActionContext,
+  IActionDefinition,
+  IAuthenticatedContext,
+  IError,
+} from "@/lib/types";
 
 export async function getActionContext(): Promise<IActionContext> {
   const requestHeaders = await headers();
@@ -24,22 +29,26 @@ export type TAuthErrorCodes = ErrorCode.Unauthorized;
 
 export function requireAuthContext(
   context: IActionContext,
-): Result<IActionContext, IError<TAuthErrorCodes>> {
+): Result<IAuthenticatedContext, IError<TAuthErrorCodes>> {
   if (!context.userId) {
     return err(createError(ErrorCode.Unauthorized, "Login required."));
   }
 
-  return ok(context);
+  return ok({ userId: context.userId, role: context.role });
 }
 
 export function createAction<TInput, TOutput, TCode extends ErrorCode>(
   definition: IActionDefinition<TInput, TOutput, TCode>,
 ): (
   rawInput: unknown,
-) => Promise<Result<TOutput, IError<TCode | TAuthErrorCodes>>> {
+) => Promise<
+  Result<TOutput, IError<TCode | TAuthErrorCodes | ErrorCode.InternalError>>
+> {
   return async (
     rawInput: unknown,
-  ): Promise<Result<TOutput, IError<TCode | TAuthErrorCodes>>> => {
+  ): Promise<
+    Result<TOutput, IError<TCode | TAuthErrorCodes | ErrorCode.InternalError>>
+  > => {
     try {
       const context = await getActionContext();
 
@@ -61,13 +70,7 @@ export function createAction<TInput, TOutput, TCode extends ErrorCode>(
         error instanceof Error
           ? error.message
           : "An unexpected error occurred.";
-      return err(
-        createError(
-          ErrorCode.InternalError as TCode & ErrorCode.InternalError,
-          message,
-          error,
-        ),
-      );
+      return err(createError(ErrorCode.InternalError, message, error));
     }
   };
 }

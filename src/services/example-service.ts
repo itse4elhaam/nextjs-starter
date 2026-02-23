@@ -6,14 +6,9 @@ import { createExample, listExamples } from "@/dal/example-dal";
 import { ErrorCode } from "@/lib/enums";
 import { createError } from "@/lib/errors";
 import { createExampleSchema } from "@/lib/examples-schema";
-import type {
-  IError,
-  IExampleDto,
-  IExampleRecord,
-  TCreateExampleInput,
-} from "@/lib/types";
+import type { IError, IExampleDto, TExampleRecord } from "@/lib/types";
 
-function toExampleDto(record: IExampleRecord): IExampleDto {
+function toExampleDto(record: TExampleRecord): IExampleDto {
   return {
     id: record.id,
     name: record.name,
@@ -33,7 +28,7 @@ export async function listExamplesService(
 }
 
 export async function createExampleService(
-  input: TCreateExampleInput | unknown,
+  input: unknown,
 ): Promise<
   Result<
     IExampleDto,
