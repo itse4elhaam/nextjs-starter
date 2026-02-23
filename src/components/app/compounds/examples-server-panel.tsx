@@ -1,4 +1,3 @@
-import { env } from "@/lib/config";
 import type { IExampleDto } from "@/lib/types";
 import { listExamplesService } from "@/services/example-service";
 import { ExampleForm } from "./example-form";
@@ -8,17 +7,14 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 });
 
 export async function ExamplesServerPanel() {
-  const databaseReady = Boolean(env.DATABASE_URL);
   let examples: IExampleDto[] = [];
   let fetchError: string | null = null;
 
-  if (databaseReady) {
-    const result = await listExamplesService();
-    if (result.isOk()) {
-      examples = result.value;
-    } else {
-      fetchError = result.error.message;
-    }
+  const result = await listExamplesService();
+  if (result.isOk()) {
+    examples = result.value;
+  } else {
+    fetchError = result.error.message;
   }
 
   return (
@@ -32,13 +28,7 @@ export async function ExamplesServerPanel() {
         </p>
       </div>
 
-      {!databaseReady ? (
-        <p className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-          Set <code>DATABASE_URL</code> to enable Drizzle examples.
-        </p>
-      ) : (
-        <ExampleForm />
-      )}
+      <ExampleForm />
 
       <div className="space-y-2">
         <h3 className="text-sm font-semibold text-slate-700">

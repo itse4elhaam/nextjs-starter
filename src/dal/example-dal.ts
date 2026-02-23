@@ -7,11 +7,7 @@ import { getDb } from "@/db";
 import { examples } from "@/db/schema";
 import { ErrorCode } from "@/lib/enums";
 import { createError } from "@/lib/errors";
-import type { IError, TExampleRecord } from "@/lib/types";
-
-export interface IListExamplesOptions {
-  limit?: number;
-}
+import type { IError, IListExamplesOptions, TExampleRecord } from "@/lib/types";
 
 export function listExamples(
   options: IListExamplesOptions = {},
