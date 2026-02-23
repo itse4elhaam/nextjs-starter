@@ -1,0 +1,34 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "727be3f9537fd13995d0a4906c324ec0c37c6fe4",
+  "prompts": {
+    "1bc0a70fabe356a3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_373d71e71ffe6biUMt76xvHJVY-a963d70f-f5f8-44a9-bb57-bf6488ee4127",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 6,
+      "total_deletions": 62,
+      "accepted_lines": 6,
+      "overriden_lines": 0
+    },
+    "bfcf45ecb2460cae": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_373d71e71ffe6biUMt76xvHJVY-d8fd5bbf-e1e8-4fdb-9193-79a7994a4e97",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 6,
+      "total_deletions": 16,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    }
+  }
+}
