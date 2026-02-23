@@ -10,11 +10,14 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 export async function ExamplesServerPanel() {
   const databaseReady = Boolean(env.DATABASE_URL);
   let examples: IExampleDto[] = [];
+  let fetchError: string | null = null;
 
   if (databaseReady) {
     const result = await listExamplesService();
     if (result.isOk()) {
       examples = result.value;
+    } else {
+      fetchError = result.error.message;
     }
   }
 
@@ -41,7 +44,11 @@ export async function ExamplesServerPanel() {
         <h3 className="text-sm font-semibold text-slate-700">
           Existing Examples
         </h3>
-        {examples.length === 0 ? (
+        {fetchError ? (
+          <p className="rounded-md border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
+            Failed to load examples: {fetchError}
+          </p>
+        ) : examples.length === 0 ? (
           <p className="text-sm text-slate-500">No rows yet.</p>
         ) : (
           <ul className="space-y-1 text-sm text-slate-700">

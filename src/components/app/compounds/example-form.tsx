@@ -1,19 +1,25 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 
 import { createExampleFormAction } from "@/actions/example-actions";
 
 const initialState = { success: false, error: undefined };
 
 export function ExampleForm() {
+  const formRef = useRef<HTMLFormElement>(null);
   const [state, formAction, isPending] = useActionState(
     createExampleFormAction,
     initialState,
   );
 
+  useEffect(() => {
+    if (state.success) {
+      formRef.current?.reset();
+    }
+  }, [state.success]);
   return (
-    <form action={formAction} className="space-y-3">
+    <form ref={formRef} action={formAction} className="space-y-3">
       <div className="flex gap-2">
         <input
           name="name"
