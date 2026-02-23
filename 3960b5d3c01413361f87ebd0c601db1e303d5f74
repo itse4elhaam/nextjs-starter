@@ -1,0 +1,38 @@
+.husky/pre-commit
+  2bc63015e69393b9 3-5
+next.config.ts
+  131b878693785738 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "3960b5d3c01413361f87ebd0c601db1e303d5f74",
+  "prompts": {
+    "131b878693785738": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_373803a0dffe8grCK0KTJGCrJ8-b1926120-8a9b-4fca-ad27-ec044ae11734",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "2bc63015e69393b9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737ed15fffev1Kr4W4kGCz1Sz-4a78f35d-a253-426c-9cab-9df34896e830",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    }
+  }
+}
