@@ -1,0 +1,194 @@
+src/dal/example-dal.ts
+  99cb49e60cdc7f1a 10,18,35
+  104fffd8fb0ed209 21,30,36,40
+  19c51f757294f115 22-23,27,37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "f9dd96c33b4bf38615a59d21c1feaba1dbd4448b",
+  "prompts": {
+    "104fffd8fb0ed209": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737ea7c9ffe5e4ScZLdCXnN03-f6d928e0-b917-446a-8cce-4f0b6ff8d93f",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 4,
+      "overriden_lines": 0
+    },
+    "131b878693785738": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_373803a0dffe8grCK0KTJGCrJ8-b1926120-8a9b-4fca-ad27-ec044ae11734",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "19c51f757294f115": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_373897f9bffeHM08NZALuVdNrP-ee28af7b-0c4a-48b9-a55b-d535873b908c",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 4,
+      "overriden_lines": 0
+    },
+    "2bc63015e69393b9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737ed15fffev1Kr4W4kGCz1Sz-4a78f35d-a253-426c-9cab-9df34896e830",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    },
+    "44a3d029dc936ec5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737fd9deffevaeHt9aIrLdaSj-342e3d05-b491-4738-b2c9-7a0d9843e901",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    },
+    "6182a5fae47616eb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737ed15fffev1Kr4W4kGCz1Sz-005980b7-d72b-4380-9c19-4b5ad937079e",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    },
+    "9156589ea0542236": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_373896547ffeQiZnwsWmSBffmy-a81ea76a-aae6-479d-b2b7-e02a6e4f7f39",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "98219edbb51ea038": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737f891bffevZJxQBrkvbcBHb-676b9f91-4421-4da4-8aae-889672cfb9ee",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    },
+    "99cb49e60cdc7f1a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737fd9deffevaeHt9aIrLdaSj-84e1c76f-c259-46b8-9213-cf164474e87b",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    },
+    "b0a4bed30c5714a2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_37389bf8dffe15NEZtVAHQ1fJV-fcdb4500-03f3-471d-b03f-2413ecfe9357",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    },
+    "b2accaa994b4ee99": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737f3d53ffeC5yEtmJUZZBzZC-db759c9f-b91b-487b-bc04-a7bec42a576f",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "b9d1f6c57533416a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737f5818ffe7UPoscLobiRpHA-290dcb12-0c27-4d60-9d2e-5bcd884c9f77",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 9,
+      "overriden_lines": 0
+    },
+    "c395abb0edbb8917": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737f3d53ffeC5yEtmJUZZBzZC-72448363-d0c5-4205-8bd5-ebee9a190263",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    },
+    "edd39d7cc93fa300": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737fd9deffevaeHt9aIrLdaSj-be4fab7d-c733-4b87-a5c7-7bb07b3ca4d1",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 5,
+      "overriden_lines": 0
+    }
+  }
+}
