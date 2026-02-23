@@ -7,7 +7,7 @@ const jiti = createJiti(import.meta.url);
 async function runEnvValidation() {
   await jiti.import("./src/lib/config");
 }
-runEnvValidation();
+await runEnvValidation();
 
 const nextConfig: NextConfig = {
   experimental: {

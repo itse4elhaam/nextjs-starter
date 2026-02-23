@@ -1,10 +1,6 @@
 [ -n "$CI" ] && exit 0
 
-# this formats the staged files and then updates the index accordingly
-FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
-if [ -n "$FILES" ]; then
-  if ! bunx biome format $FILES --write --files-ignore-unknown=true; then
-    echo "Biome format skipped (no supported files or formatting failed)."
-  fi
-fi
+# Format only staged files; null-delimited xargs handles filenames with spaces
+git diff --cached --name-only --diff-filter=ACMR -z |
+  xargs -0 -r bunx biome format --write --files-ignore-unknown=true --
 git update-index --again
