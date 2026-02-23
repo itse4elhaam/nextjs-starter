@@ -1,5 +1,6 @@
 import type { Result as NeverthrowResult } from "neverthrow";
 
+import type { examples } from "@/db/schema";
 import type { ErrorCode, HttpVerb } from "./enums";
 import type { TCreateExampleInput } from "./examples-schema";
 
@@ -18,11 +19,7 @@ export interface IFetchResponse<T = unknown> {
   error: string | null;
 }
 
-export interface IExampleRecord {
-  id: number;
-  name: string;
-  createdAt: Date;
-}
+export type TExampleRecord = typeof examples.$inferSelect;
 
 export interface IExampleDto {
   id: number;
@@ -32,6 +29,11 @@ export interface IExampleDto {
 
 export interface IActionContext {
   userId: string | null;
+  role: string | null;
+}
+
+export interface IAuthenticatedContext {
+  userId: string;
   role: string | null;
 }
 

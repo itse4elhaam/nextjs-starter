@@ -1,7 +1,7 @@
 import type { ErrorCode } from "@/lib/enums";
 import type { IError, TResult } from "@/lib/types";
 
-export async function tryCatch<T, E = Error>(
+export async function tryCatch<T, E = unknown>(
   promise: Promise<T>,
 ): Promise<TResult<T, E>> {
   try {
