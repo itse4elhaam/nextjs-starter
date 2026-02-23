@@ -111,3 +111,8 @@ export type TExampleActionErrorCodes =
 export interface IListExamplesOptions {
   limit?: number;
 }
+
+export interface IFormActionResponse {
+  success: boolean;
+  error?: string;
+}

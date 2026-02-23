@@ -12,6 +12,7 @@ import { createExampleSchema } from "@/lib/examples-schema";
 import type {
   IError,
   IExampleDto,
+  IFormActionResponse,
   TCreateExampleInput,
   TExampleActionErrorCodes,
 } from "@/lib/types";
@@ -64,7 +65,7 @@ export const createExampleAction = createAction<
 export async function createExampleFormAction(
   _prevState: unknown,
   formData: FormData,
-): Promise<{ success: boolean; error?: string }> {
+): Promise<IFormActionResponse> {
   const result = await createExampleAction(formData);
   if (result.isErr()) {
     return { success: false, error: result.error.message };
