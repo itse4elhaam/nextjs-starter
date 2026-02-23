@@ -1,0 +1,130 @@
+src/app/api/examples/route.ts
+  6182a5fae47616eb 14-15
+  b0a4bed30c5714a2 6,56-59,61-63
+src/helpers/api.ts
+  b9d1f6c57533416a 1-2,14,38-41,43,54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "9500454b51bacb1610a1141b9696ba439b6f86c3",
+  "prompts": {
+    "131b878693785738": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_373803a0dffe8grCK0KTJGCrJ8-b1926120-8a9b-4fca-ad27-ec044ae11734",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "2bc63015e69393b9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737ed15fffev1Kr4W4kGCz1Sz-4a78f35d-a253-426c-9cab-9df34896e830",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    },
+    "6182a5fae47616eb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737ed15fffev1Kr4W4kGCz1Sz-005980b7-d72b-4380-9c19-4b5ad937079e",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    },
+    "9156589ea0542236": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_373896547ffeQiZnwsWmSBffmy-a81ea76a-aae6-479d-b2b7-e02a6e4f7f39",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "98219edbb51ea038": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737f891bffevZJxQBrkvbcBHb-676b9f91-4421-4da4-8aae-889672cfb9ee",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    },
+    "b0a4bed30c5714a2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_37389bf8dffe15NEZtVAHQ1fJV-fcdb4500-03f3-471d-b03f-2413ecfe9357",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    },
+    "b2accaa994b4ee99": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737f3d53ffeC5yEtmJUZZBzZC-db759c9f-b91b-487b-bc04-a7bec42a576f",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "b9d1f6c57533416a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737f5818ffe7UPoscLobiRpHA-290dcb12-0c27-4d60-9d2e-5bcd884c9f77",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 9,
+      "overriden_lines": 0
+    },
+    "c395abb0edbb8917": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_3737f3d53ffeC5yEtmJUZZBzZC-72448363-d0c5-4205-8bd5-ebee9a190263",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    }
+  }
+}
