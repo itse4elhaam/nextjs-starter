@@ -9,13 +9,13 @@ import { createAction } from "@/actions/action-base";
 import { ErrorCode } from "@/lib/enums";
 import { createError } from "@/lib/errors";
 import { createExampleSchema } from "@/lib/examples-schema";
-import type { IError, IExampleDto, TCreateExampleInput } from "@/lib/types";
+import type {
+  IError,
+  IExampleDto,
+  TCreateExampleInput,
+  TExampleActionErrorCodes,
+} from "@/lib/types";
 import { createExampleService } from "@/services/example-service";
-
-type TExampleActionErrorCodes =
-  | ErrorCode.InvalidForm
-  | ErrorCode.ValidationError
-  | ErrorCode.DbCreateFailed;
 
 function parseExampleFormData(
   rawInput: unknown,

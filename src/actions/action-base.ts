@@ -10,6 +10,7 @@ import type {
   IActionDefinition,
   IAuthenticatedContext,
   IError,
+  TAuthErrorCodes,
 } from "@/lib/types";
 
 export async function getActionContext(): Promise<IActionContext> {
@@ -24,8 +25,6 @@ export async function getActionContext(): Promise<IActionContext> {
     role: requestHeaders.get("x-user-role"),
   };
 }
-
-export type TAuthErrorCodes = ErrorCode.Unauthorized;
 
 export function requireAuthContext(
   context: IActionContext,

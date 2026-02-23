@@ -100,3 +100,14 @@ export interface ISeoConfig {
 export interface IJsonLdScript {
   __html: string;
 }
+
+export type TAuthErrorCodes = ErrorCode.Unauthorized;
+
+export type TExampleActionErrorCodes =
+  | ErrorCode.InvalidForm
+  | ErrorCode.ValidationError
+  | ErrorCode.DbCreateFailed;
+
+export interface IListExamplesOptions {
+  limit?: number;
+}
