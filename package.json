@@ -17,16 +17,16 @@
     "type-check": "mkdir -p .next/types && printf '%s\n' 'import type { ReactNode } from \"react\";' 'export type AppRoutes = string;' 'export type AppRouteHandlerRoutes = string;' 'export type LayoutRoutes = string;' 'export type ParamMap = Record<string, Record<string, string>>;' 'export type LayoutProps<Route extends LayoutRoutes = LayoutRoutes> = { params: Promise<ParamMap[Route]>; children: ReactNode; };' 'declare global { type LayoutProps<Route extends LayoutRoutes = LayoutRoutes> = { params: Promise<ParamMap[Route]>; children: ReactNode; }; }' > .next/types/routes.d.ts && bunx tsc --noEmit"
   },
   "dependencies": {
-    "@sentry/nextjs": "^8.48.0",
     "@radix-ui/react-slot": "^1.2.3",
+    "@sentry/nextjs": "^8.48.0",
     "@t3-oss/env-core": "^0.13.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.44.4",
     "jiti": "^2.4.2",
     "lucide-react": "^0.511.0",
-    "next": "16.1.6",
     "neverthrow": "^6.2.2",
+    "next": "16.1.6",
     "postgres": "^3.4.5",
     "react": "19.2.0",
     "react-dom": "19.2.0",
