@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import type { ReactNode } from "react";
+
 import "./globals.css";
-import { ReactNode } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,9 +14,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import { buildSeoMetadata, getSiteUrl } from "@/lib/seo";
+
 export const metadata: Metadata = {
-  title: "Nextjs Starter Kit",
-  description: "Contains code for Nextjs starter kit",
+  ...buildSeoMetadata({
+    title: "Nextjs Starter Kit",
+    description: "Contains code for Nextjs starter kit",
+    url: "/",
+  }),
+  metadataBase: new URL(getSiteUrl()),
 };
 
 export default function RootLayout({

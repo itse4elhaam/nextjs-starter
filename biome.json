@@ -1,0 +1,193 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.2/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!**/scripts.local",
+      "!**/scripts",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/out",
+      "!**/build",
+      "!**/next-env.d.ts",
+      "!**/src/components/ui",
+      "!**/public",
+      "!**/*.test.ts"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "formatWithErrors": false
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "performance": {
+        "noAccumulatingSpread": {
+          "level": "error"
+        },
+        "noDelete": {
+          "level": "error"
+        }
+      },
+      "security": {
+        "noGlobalEval": {
+          "level": "error"
+        }
+      },
+      "suspicious": {
+        "noImportantInKeyframe": {
+          "level": "error"
+        },
+        "noImplicitAnyLet": {
+          "level": "warn"
+        },
+        "noGlobalIsNan": {
+          "level": "error"
+        },
+        "noFunctionAssign": {
+          "level": "error"
+        },
+        "useAwait": {
+          "level": "error"
+        },
+        "useIsArray": {
+          "level": "error"
+        },
+        "noUnsafeNegation": {
+          "level": "error"
+        },
+        "noReactSpecificProps": {
+          "level": "error"
+        }
+      },
+      "complexity": {
+        "noExcessiveCognitiveComplexity": {
+          "level": "error",
+          "options": {
+            "maxAllowedComplexity": 15
+          }
+        },
+        "noUselessTernary": {
+          "level": "warn"
+        },
+        "noForEach": {
+          "level": "error"
+        }
+      },
+      "style": {
+        "noUselessElse": "error",
+        "useNamingConvention": {
+          "level": "error",
+          "options": {
+            "strictCase": false,
+            "requireAscii": false,
+            "conventions": [
+              {
+                "selector": {
+                  "kind": "interface"
+                },
+                "formats": ["PascalCase"],
+                "match": "I[A-Z].*"
+              },
+              {
+                "selector": {
+                  "kind": "typeAlias"
+                },
+                "formats": ["PascalCase"],
+                "match": "T[A-Z].*"
+              },
+              {
+                "selector": {
+                  "kind": "enum"
+                },
+                "formats": ["PascalCase"]
+              }
+            ]
+          }
+        },
+        "useExportType": {
+          "level": "off"
+        },
+        "useFragmentSyntax": {
+          "level": "error"
+        }
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/src/**/*.tsx", "**/src/**/*.jsx"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noReactSpecificProps": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/next.config.mjs", "**/redirects.mjs"],
+      "formatter": {
+        "lineWidth": 320
+      }
+    },
+    {
+      "includes": [
+        "**/src/lib/constants.ts",
+        "**/src/lib/config.ts",
+        "**/src/helpers/api.ts",
+        "**/src/lib/env.ts"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNamingConvention": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/src/helpers/cookies.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noDocumentCookie": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/src/lib/types.ts", "**/src/consts/products.ts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noExcessiveCognitiveComplexity": "off"
+          }
+        }
+      }
+    }
+  ]
+}

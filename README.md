@@ -1,8 +1,8 @@
 # 🚀 Next.js Starter Template
 
-> A production-ready Next.js 15 starter template with TypeScript, Tailwind CSS v4, shadcn/ui, and modern best practices.
+> A production-ready Next.js 16 starter template with TypeScript, Tailwind CSS v4, shadcn/ui, and modern best practices.
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.3-black?logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwind-css)](https://tailwindcss.com/)
@@ -35,9 +35,10 @@ This isn't just another Next.js starter. It's a **battle-tested, production-read
 - ✅ **Atomic design pattern** for scalable component architecture
 - ✅ **Strict naming conventions** (Interfaces: `IUser`, Types: `TApiResponse`)
 - ✅ **Pre-configured utilities** (type-safe API fetcher, storage helpers)
-- ✅ **Automated code quality** (ESLint + Prettier + Husky hooks)
+- ✅ **Automated code quality** (Biome + Husky hooks)
 - ✅ **CI/CD ready** (GitHub Actions with lint + type-check)
-- ✅ **Modern stack** (Next.js 15, React 19, Tailwind v4, Bun)
+- ✅ **Modern stack** (Next.js 16, React 19, Tailwind v4, Bun)
+- ✅ **DAL layering examples** (DB → DAL → Services → Actions/API)
 - ✅ **shadcn/ui integration** with New York style variants
 
 ## ✨ Features
@@ -50,8 +51,8 @@ This isn't just another Next.js starter. It's a **battle-tested, production-read
 - 🌍 **Environment Validation** - Runtime validation with Zod
 - 🎯 **Atomic Design** - Scalable component architecture (atoms/molecules/compounds)
 - 🔧 **Utility Helpers** - Pre-built helpers for API calls, storage, cookies
-- 🎨 **Code Formatting** - Prettier with automatic formatting on commit
-- 📏 **Linting** - ESLint with TypeScript, React, and Next.js rules
+- 🎨 **Code Formatting** - Biome with automatic formatting on commit
+- 📏 **Linting** - Biome check (lint + formatting)
 - 🪝 **Git Hooks** - Husky pre-commit (format) and pre-push (lint)
 - 🚀 **CI/CD** - GitHub Actions workflow for automated testing
 - 📱 **Responsive** - Mobile-first design approach
@@ -60,7 +61,7 @@ This isn't just another Next.js starter. It's a **battle-tested, production-read
 
 | Category | Technology |
 |----------|-----------|
-| **Framework** | Next.js 15.3 (App Router) |
+| **Framework** | Next.js 16 (App Router) |
 | **UI Library** | React 19 |
 | **Language** | TypeScript 5.x |
 | **Package Manager** | Bun |
@@ -69,8 +70,9 @@ This isn't just another Next.js starter. It's a **battle-tested, production-read
 | **Icons** | Lucide React |
 | **Validation** | Zod |
 | **Environment** | @t3-oss/env-core |
-| **Linting** | ESLint 9 + Prettier |
+| **Linting** | Biome |
 | **Git Hooks** | Husky |
+| **ORM** | Drizzle ORM + drizzle-kit |
 | **CI/CD** | GitHub Actions |
 
 ## 🚀 Quick Start
@@ -94,19 +96,19 @@ cd my-project
 # Click "Use this template" button on GitHub
 ```
 
-2. **Install dependencies:**
-
-```bash
-bun install
-```
-
-3. **Set up environment variables:**
+2. **Set up environment variables:**
 
 ```bash
 # Copy the example env file
 cp .env.example .env
 
 # Edit .env with your values
+```
+
+3. **Install dependencies:**
+
+```bash
+bun install
 ```
 
 4. **Start the development server:**
@@ -136,14 +138,26 @@ nextjs-starter/
 │   ├── app/                    # Next.js App Router
 │   │   ├── globals.css        # Global styles + Tailwind imports
 │   │   ├── layout.tsx         # Root layout component
-│   │   └── page.tsx           # Home page
+│   │   ├── page.tsx           # Home page
+│   │   └── api/examples/route.ts # Route handler example
 │   ├── components/
 │   │   ├── app/               # Application-specific components
 │   │   │   ├── atoms/         # Basic building blocks
 │   │   │   ├── molecules/     # Composite components
 │   │   │   └── compounds/     # Complex feature components
+│   │   │       ├── examples-server-panel.tsx
+│   │   │       └── examples-client-panel.tsx
 │   │   └── ui/                # shadcn/ui components
 │   │       └── button.tsx     # Example: Button component
+│   ├── actions/               # Server actions (mutations)
+│   │   ├── action-base.ts
+│   │   └── example-actions.ts
+│   ├── dal/                   # Data access layer
+│   │   └── example-dal.ts
+│   ├── db/                    # DB client + schema
+│   │   ├── index.ts
+│   │   ├── schema.ts
+│   │   └── migrations/
 │   ├── helpers/               # Utility helpers
 │   │   ├── api.ts            # Type-safe fetch wrapper
 │   │   ├── cookies.ts        # Client-side cookie management
@@ -151,22 +165,26 @@ nextjs-starter/
 │   │   └── index.ts          # Barrel export
 │   ├── hooks/                # Custom React hooks
 │   │   └── index.ts          # Barrel export
+│   ├── services/             # Business logic layer
+│   │   └── example-service.ts
 │   └── lib/                  # Core utilities & configuration
 │       ├── config.ts         # Environment validation (Zod + T3 Env)
+│       ├── env.ts            # Environment schema (createEnv)
 │       ├── constants.ts      # App constants (HTTP_VERBS, etc.)
+│       ├── enums.ts          # Shared enums (ErrorCode)
 │       ├── types.ts          # TypeScript interfaces/types
+│       ├── examples-schema.ts
 │       ├── utils.ts          # Utility functions (cn, isClientSide)
 │       └── index.ts          # Barrel export
 ├── .env.example              # Example environment variables
-├── .eslintrc.json            # ESLint configuration
 ├── .gitignore                # Git ignore rules
-├── .prettierrc               # Prettier configuration
+├── biome.json                # Biome configuration
 ├── components.json           # shadcn/ui configuration
+├── drizzle.config.ts          # Drizzle config
 ├── next.config.ts            # Next.js configuration
 ├── package.json              # Dependencies and scripts
 ├── postcss.config.mjs        # PostCSS configuration
 ├── README.md                 # This file
-├── tailwind.config.ts        # Tailwind CSS configuration
 └── tsconfig.json             # TypeScript configuration
 ```
 
@@ -200,11 +218,12 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    PORT: z.coerce.number(),
-    NODE_ENV: z.enum(["production", "development"]),
+    DATABASE_URL: z.string().url().optional(),
+    PORT: z.coerce.number().default(3000),
+    NODE_ENV: z.enum(["production", "development"]).default("development"),
   },
   client: {
-    NEXT_PUBLIC_API_BASE_URL: z.string().url(),
+    NEXT_PUBLIC_API_BASE_URL: z.string().url().default("http://localhost:3000"),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,
@@ -317,7 +336,19 @@ if (isServerSide()) {
 }
 ```
 
-### 5. shadcn/ui Integration
+### 5. DAL + Server Action Examples
+
+**Files:**
+- `src/db/schema.ts` (schema)
+- `src/db/index.ts` (db client)
+- `src/dal/example-dal.ts` (DAL)
+- `src/services/example-service.ts` (services)
+- `src/actions/example-actions.ts` (server action)
+- `src/app/api/examples/route.ts` (route handler)
+- `src/components/app/compounds/examples-server-panel.tsx` (server component)
+- `src/components/app/compounds/examples-client-panel.tsx` (client fetch)
+
+### 6. shadcn/ui Integration
 
 **Add components:**
 
@@ -352,9 +383,13 @@ export default function Page() {
 | **dev** | `bun dev` | Start development server with Turbopack |
 | **build** | `bun build` | Create production build |
 | **start** | `bun start` | Start production server |
-| **lint** | `bun lint` | Run ESLint checks |
+| **lint** | `bun lint` | Run Biome checks |
 | **type-check** | `bun type-check` | Run TypeScript type checking |
-| **format** | `bun format` | Format code with Prettier |
+| **format** | `bun format` | Format code with Biome |
+| **db:generate** | `bun run db:generate` | Generate migrations |
+| **db:migrate** | `bun run db:migrate` | Run migrations |
+| **db:push** | `bun run db:push` | Push schema to database |
+| **db:studio** | `bun run db:studio` | Drizzle Studio |
 | **prepare** | `bun prepare` | Install Husky git hooks (auto-runs on install) |
 
 ### Development Workflow
@@ -377,11 +412,12 @@ Create a `.env` file in the root directory:
 
 ```env
 # Server-side only (NOT exposed to browser)
+DATABASE_URL=postgres://YOUR_USERNAME:YOUR_PASSWORD@localhost:5432/app_db
 PORT=3000
 NODE_ENV=development
 
 # Client-side (exposed to browser, must use NEXT_PUBLIC_ prefix)
-NEXT_PUBLIC_API_BASE_URL=https://api.example.com
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 ```
 
 **Important:**
@@ -411,15 +447,12 @@ export const env = createEnv({
 
 ## 📏 Code Standards
 
-### ESLint Rules
+### Biome Rules
 
-**File:** `eslint.config.mjs`
+Biome enforces recommended rules. We also follow naming conventions:
 
-- ✅ **Max 600 lines per file** - Encourages modular code
-- ✅ **React in JSX scope not required** - React 17+ JSX transform
-- ✅ **Naming conventions enforced:**
-  - Interfaces: Must start with `I` (e.g., `IUser`, `IApiResponse`)
-  - Types: Must start with `T` (e.g., `TUserRole`, `TApiError`)
+- Interfaces: Must start with `I` (e.g., `IUser`, `IApiResponse`)
+- Types: Must start with `T` (e.g., `TUserRole`, `TApiError`)
 
 ### TypeScript Configuration
 
@@ -430,27 +463,24 @@ export const env = createEnv({
 - ✅ **ESNext modules** - Modern JavaScript features
 - ✅ **JSX preserved** - Handled by Next.js
 
-### Prettier Configuration
+### Biome Configuration
 
-**File:** `.prettierrc`
+**File:** `biome.json`
 
-- Semi-colons: ✅ Yes
-- Quotes: Double quotes
-- Tab width: 2 spaces
-- Print width: 80 characters
-- Special rules for `next.config.mjs` (1000 char width)
+- Indentation: 2 spaces
+- Line width: 80
 
 ## 🪝 Git Hooks & CI/CD
 
 ### Husky Git Hooks
 
 **Pre-commit** (`.husky/pre-commit`):
-- Automatically formats staged files with Prettier
+- Automatically formats staged files with Biome
 - Runs before each commit
 - Ensures consistent code style
 
 **Pre-push** (`.husky/pre-push`):
-- Runs ESLint on all files
+- Runs Biome check on all files
 - Prevents pushing code with linting errors
 - Saves CI/CD time by catching issues early
 
@@ -545,9 +575,9 @@ npm install -g bun
 4. Ensure client variables DO have `NEXT_PUBLIC_` prefix
 5. Restart the dev server after changes
 
-### ESLint naming convention errors
+### Biome naming convention errors
 
-**Problem:** `Interface 'User' incorrectly named, must match the pattern '^I[A-Z]'`
+**Problem:** `Interface 'User' incorrectly named, must match the pattern 'I[A-Z]'`
 
 **Solution:**
 ```typescript
@@ -573,7 +603,7 @@ bun run prepare
 bunx husky install
 ```
 
-### Prettier not formatting on commit
+### Biome not formatting on commit
 
 **Problem:** Files aren't auto-formatted
 
@@ -606,9 +636,9 @@ bunx husky install
 Future enhancements planned for this template:
 
 - [ ] **Testing Setup** - Vitest + React Testing Library
-- [ ] **API Route Examples** - REST API patterns
-- [ ] **Server Actions Examples** - Next.js 15 server actions
-- [ ] **Database Integration** - Prisma or Drizzle ORM setup
+- [x] **API Route Examples** - REST API patterns
+- [x] **Server Actions Examples** - Next.js server actions
+- [x] **Database Integration** - Drizzle ORM setup
 - [ ] **Authentication** - NextAuth.js v5 example
 - [ ] **Error Boundary** - Custom error handling component
 - [ ] **Loading States** - Suspense and loading UI examples
