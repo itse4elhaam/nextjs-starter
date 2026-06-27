@@ -13,6 +13,7 @@ export const env = createEnv({
     SENTRY_AUTH_TOKEN: z.string().optional(),
     SENTRY_ORG: z.string().optional(),
     SENTRY_PROJECT: z.string().optional(),
+    GA_API_SECRET: z.string().optional(),
   },
 
   clientPrefix: "NEXT_PUBLIC_",
@@ -21,6 +22,8 @@ export const env = createEnv({
     NEXT_PUBLIC_API_BASE_URL: z.string().url().default("http://localhost:3000"),
     NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
     NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
+    NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
+    NEXT_PUBLIC_GA_ENDPOINT: z.string().url().optional(),
   },
 
   runtimeEnv: process.env,
