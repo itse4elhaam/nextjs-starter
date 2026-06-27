@@ -1,13 +1,5 @@
 import { withSentryConfig } from "@sentry/nextjs";
-import { createJiti } from "jiti";
 import type { NextConfig } from "next";
-
-const jiti = createJiti(import.meta.url);
-
-async function runEnvValidation() {
-  await jiti.import("./src/lib/config");
-}
-await runEnvValidation();
 
 const nextConfig: NextConfig = {
   experimental: {
