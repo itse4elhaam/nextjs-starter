@@ -27,6 +27,7 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 80,
+    "lineEnding": "lf",
     "formatWithErrors": false
   },
   "css": {
@@ -80,6 +81,11 @@
           "level": "error"
         },
         "noReactSpecificProps": {
+          "level": "error"
+        }
+      },
+      "correctness": {
+        "noUnusedFunctionParameters": {
           "level": "error"
         }
       },
@@ -180,11 +186,25 @@
       }
     },
     {
-      "includes": ["**/src/lib/types.ts", "**/src/consts/products.ts"],
+      "includes": ["**/src/lib/types.ts"],
       "linter": {
         "rules": {
           "complexity": {
             "noExcessiveCognitiveComplexity": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "**/src/lib/analytics/**",
+        "**/src/lib/client-errors.ts",
+        "**/src/lib/types.ts"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNamingConvention": "off"
           }
         }
       }
