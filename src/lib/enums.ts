@@ -12,6 +12,7 @@ export enum ErrorCode {
   DatabaseError = "DATABASE_ERROR",
   DbListFailed = "DB_LIST_FAILED",
   DbCreateFailed = "DB_CREATE_FAILED",
+  TooManyRequests = "TOO_MANY_REQUESTS",
 }
 
 // ─── HTTP ─────────────────────────────────────────────────────────────────
@@ -43,6 +44,14 @@ export enum FormStatus {
   Loading = "loading",
   Success = "success",
   Error = "error",
+}
+
+// ─── Cookie Consent ─────────────────────────────────────────────────────
+
+export enum CookieConsentStatus {
+  Accepted = "accepted",
+  Declined = "declined",
+  Pending = "pending",
 }
 
 // ─── Logging ──────────────────────────────────────────────────────────────

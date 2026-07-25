@@ -15,6 +15,24 @@ export const HTTP_STATUS = {
   SERVICE_UNAVAILABLE: 503,
 } as const;
 
+// ─── Content Types ─────────────────────────────────────────────────────────
+
+export const HTTP_CONTENT_TYPE = {
+  JSON: "application/json",
+  HTML: "text/html",
+  TEXT: "text/plain",
+  XML: "application/xml",
+  FORM: "application/x-www-form-urlencoded",
+} as const;
+
+// ─── CORS ──────────────────────────────────────────────────────────────────
+
+export const CORS_HEADERS = {
+  ORIGIN: "origin",
+  METHODS: "access-control-request-method",
+  HEADERS: "access-control-request-headers",
+} as const;
+
 // ─── SEO ───────────────────────────────────────────────────────────────────
 
 export const DEFAULT_SEO = {
@@ -24,12 +42,37 @@ export const DEFAULT_SEO = {
   locale: "en_US",
 } as const;
 
+// ─── Social Image ─────────────────────────────────────────────────────────
+
+export const SOCIAL_IMAGE = {
+  DEFAULT_WIDTH: 1200,
+  DEFAULT_HEIGHT: 630,
+  FORMAT: "image/png",
+} as const;
+
 export const DISALLOWED_ROBOTS_PATHS = [
   "/api/",
   "/admin/",
   "/private/",
   "/_next/",
 ] as const;
+
+// ─── AI Crawlers ───────────────────────────────────────────────────────────
+
+export const AI_CRAWLERS = {
+  SEARCH_AND_CITATION: [
+    "Applebot",
+    "Google-Extended",
+    "PerplexityBot",
+  ] as const,
+  TRAINING: [
+    "CCBot",
+    "GPTBot",
+    "Claude-Web",
+    "anthropic-ai",
+    "cohere-ai",
+  ] as const,
+} as const;
 
 export const SITEMAP_CONFIG = {
   maxEntries: 50000,
@@ -135,3 +178,31 @@ export const MOTION = {
   EASE_ORGANIC: "cubic-bezier(0.22, 1, 0.36, 1)",
   EASE_SPRING: "cubic-bezier(0.34, 1.56, 0.64, 1)",
 } as const;
+
+// ─── Card Styles ───────────────────────────────────────────────────────────
+
+export const CARD_STYLES = {
+  BASE: "rounded-lg border bg-card text-card-foreground shadow-sm",
+  INTERACTIVE:
+    "rounded-lg border bg-card text-card-foreground shadow-sm transition-colors hover:bg-accent/50",
+  STATIC: "rounded-lg border bg-card text-card-foreground",
+} as const;
+
+// ─── Focus Ring ───────────────────────────────────────────────────────────
+
+export const FOCUS_RING =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+
+// ─── General Purpose ──────────────────────────────────────────────────────
+
+export const ALLOWED_URL_SCHEMES = [
+  "http:",
+  "https:",
+  "mailto:",
+  "tel:",
+] as const;
+
+export const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
+
+export const MILLISECONDS_PER_DAY = 86_400_000;
