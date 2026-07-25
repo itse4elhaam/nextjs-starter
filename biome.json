@@ -14,12 +14,17 @@
       "!**/scripts",
       "!**/node_modules",
       "!**/.next",
+      "!**/.omo/run-continuation",
       "!**/out",
       "!**/build",
+      "!**/coverage",
       "!**/next-env.d.ts",
       "!**/src/components/ui",
       "!**/public",
-      "!**/*.test.ts"
+      "!**/*.test.ts",
+      "!**/tsconfig.json",
+      "!**/playwright-report",
+      "!**/test-results"
     ]
   },
   "formatter": {
@@ -45,6 +50,11 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "correctness": {
+        "noUnusedFunctionParameters": {
+          "level": "error"
+        }
+      },
       "performance": {
         "noAccumulatingSpread": {
           "level": "error"
@@ -63,7 +73,7 @@
           "level": "error"
         },
         "noImplicitAnyLet": {
-          "level": "warn"
+          "level": "error"
         },
         "noGlobalIsNan": {
           "level": "error"
@@ -84,11 +94,6 @@
           "level": "error"
         }
       },
-      "correctness": {
-        "noUnusedFunctionParameters": {
-          "level": "error"
-        }
-      },
       "complexity": {
         "noExcessiveCognitiveComplexity": {
           "level": "error",
@@ -97,7 +102,7 @@
           }
         },
         "noUselessTernary": {
-          "level": "warn"
+          "level": "error"
         },
         "noForEach": {
           "level": "error"
@@ -155,7 +160,11 @@
       }
     },
     {
-      "includes": ["**/next.config.mjs", "**/redirects.mjs"],
+      "includes": [
+        "**/next.config.ts",
+        "**/next.config.mjs",
+        "**/redirects.mjs"
+      ],
       "formatter": {
         "lineWidth": 320
       }
@@ -165,7 +174,9 @@
         "**/src/lib/constants.ts",
         "**/src/lib/config.ts",
         "**/src/helpers/api.ts",
-        "**/src/lib/env.ts"
+        "**/src/lib/env.ts",
+        "**/src/lib/types.ts",
+        "**/src/lib/analytics/**"
       ],
       "linter": {
         "rules": {
@@ -196,13 +207,12 @@
       }
     },
     {
-      "includes": [
-        "**/src/lib/analytics/**",
-        "**/src/lib/client-errors.ts",
-        "**/src/lib/types.ts"
-      ],
+      "includes": ["**/src/__tests__/**"],
       "linter": {
         "rules": {
+          "performance": {
+            "noImgElement": "off"
+          },
           "style": {
             "useNamingConvention": "off"
           }

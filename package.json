@@ -2,21 +2,36 @@
   "name": "nextjs-starter",
   "version": "0.1.0",
   "private": true,
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version"
+    ]
+  },
   "scripts": {
     "dev": "npx env-cmd -f \".env\" next dev --turbopack",
-    "build": "next build",
+    "build": "bun run validate:env && next build",
     "start": "npx env-cmd -f \".env\" next start",
     "lint": "biome check .",
     "lint:fix": "biome lint --write",
     "format": "biome format --write .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
+    "db:drop": "drizzle-kit drop",
     "prepare": "husky",
-    "type-check": "mkdir -p .next/types && printf '%s\n' 'import type { ReactNode } from \"react\";' 'export type AppRoutes = string;' 'export type AppRouteHandlerRoutes = string;' 'export type LayoutRoutes = string;' 'export type ParamMap = Record<string, Record<string, string>>;' 'export type LayoutProps<Route extends LayoutRoutes = LayoutRoutes> = { params: Promise<ParamMap[Route]>; children: ReactNode; };' 'declare global { type LayoutProps<Route extends LayoutRoutes = LayoutRoutes> = { params: Promise<ParamMap[Route]>; children: ReactNode; }; }' > .next/types/routes.d.ts && bunx tsc --noEmit"
+    "type-check": "bunx jiti scripts/write-next-route-types.ts && bunx tsc --noEmit",
+    "validate": "bun run type-check && bun run lint",
+    "validate:env": "bunx jiti scripts/validate-env.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
@@ -45,6 +60,7 @@
     "@types/node": "^20",
     "@types/react": "19.2.6",
     "@types/react-dom": "19.2.3",
+    "@vitest/coverage-v8": "^4.1.0",
     "drizzle-kit": "^0.31.4",
     "husky": "^9.1.7",
     "tailwindcss": "^4",

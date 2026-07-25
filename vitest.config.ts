@@ -12,8 +12,11 @@ export default defineConfig({
     },
   },
   test: {
+    exclude: ["e2e/**", "**/node_modules/**", ".next/**"],
     environment: "node",
     globals: true,
+    setupFiles: [path.resolve(__dirname, "./src/__tests__/setup.ts")],
+    sequence: { hooks: "stack" },
     maxConcurrency: 1,
     fileParallelism: false,
     clearMocks: true,
