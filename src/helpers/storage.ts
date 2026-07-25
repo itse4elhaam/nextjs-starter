@@ -1,4 +1,10 @@
+function isBrowser(): boolean {
+  return typeof window !== "undefined";
+}
+
 export function getLocalStorage<T>(key: string): T | null {
+  if (!isBrowser()) return null;
+
   try {
     const serializedValue = localStorage.getItem(key);
     if (serializedValue === null) return null;
@@ -10,6 +16,8 @@ export function getLocalStorage<T>(key: string): T | null {
 }
 
 export function setLocalStorage(key: string, value: unknown): void {
+  if (!isBrowser()) return;
+
   try {
     const serializedValue = JSON.stringify(value);
     localStorage.setItem(key, serializedValue);
@@ -18,7 +26,19 @@ export function setLocalStorage(key: string, value: unknown): void {
   }
 }
 
+export function removeLocalStorage(key: string): void {
+  if (!isBrowser()) return;
+
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    console.error("Error removing item from localStorage", error);
+  }
+}
+
 export function getSessionStorage<T>(key: string): T | null {
+  if (!isBrowser()) return null;
+
   try {
     const serializedValue = sessionStorage.getItem(key);
     if (serializedValue === null) return null;
@@ -30,10 +50,22 @@ export function getSessionStorage<T>(key: string): T | null {
 }
 
 export function setSessionStorage(key: string, value: unknown): void {
+  if (!isBrowser()) return;
+
   try {
     const serializedValue = JSON.stringify(value);
     sessionStorage.setItem(key, serializedValue);
   } catch (error) {
     console.error("Error setting item in sessionStorage", error);
+  }
+}
+
+export function removeSessionStorage(key: string): void {
+  if (!isBrowser()) return;
+
+  try {
+    sessionStorage.removeItem(key);
+  } catch (error) {
+    console.error("Error removing item from sessionStorage", error);
   }
 }
