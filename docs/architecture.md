@@ -262,6 +262,42 @@ Server Action. This boundary is strict and enforced by convention.
 
 ---
 
+## SEO & Answer Engine Optimization (AEO)
+
+The template includes a comprehensive SEO/AEO system designed for both traditional search engines and AI/LLM crawlers.
+
+### Layer 1: Core Metadata (`src/lib/seo/`)
+
+- **`buildSeoMetadata(config)`** — Centralized `Metadata` builder used by every page via `generateMetadata()`. Handles titles, descriptions, canonical URLs, Open Graph, Twitter cards, and robots directives.
+- **8 JSON-LD schema generators** — `Organization`, `WebSite`, `BreadcrumbList`, `BlogPosting`, `FAQPage`, `CollectionPage`, `ItemList`, `VacationRental`. Each generates standard schema.org structured data.
+- **`seo/` barrel export** — All SEO functions are exported from `@/lib/seo`.
+
+### Layer 2: Components
+
+- **`JsonLd`** — XSS-safe `<script type="application/ld+json">` component.
+- **`Breadcrumbs`** — Compound: renders JSON-LD `BreadcrumbList` + visual semantic `<nav>` with `aria-label` and `aria-current`.
+- **`BreadcrumbTrail`** — Accessible breadcrumb navigation with `<ol>`/`<li>` structure.
+
+### Layer 3: App-Level Files
+
+| File | Purpose |
+|------|---------|
+| `app/robots.ts` | Environment-aware robots.txt with `AI_CRAWLERS` rules |
+| `app/sitemap.ts` | Dynamic sitemap.xml with priorities and change frequencies |
+| `app/opengraph-image.tsx` | Dynamic OG image generation via `next/og` |
+| `app/llms.txt/route.ts` | AEO plaintext file for AI crawlers (site info, pages, stack) |
+| `app/layout.tsx` | Root layout renders Organization + WebSite JSON-LD site-wide |
+
+### Rules
+
+- Every public page MUST export `generateMetadata()` using `buildSeoMetadata()`.
+- Every public page MUST include relevant JSON-LD schemas via `JsonLd` or `Breadcrumbs`.
+- Pages with navigation context MUST include `Breadcrumbs` (JSON-LD + visual).
+- The `llms.txt` route must be kept in sync as the site grows.
+- See `AGENTS.md` for the full SEO/AEO requirements checklist.
+
+---
+
 ## Environments
 
 | Environment | Env File | Env Sourcing | Notes |
@@ -281,6 +317,9 @@ are never prefixed with `NEXT_PUBLIC_`. Client-safe variables
 Next.js knows to inline them into the client bundle.
 
 **Key rules:**
+- Always import env vars from `@/lib/env` or `@/lib/config` — never use `process.env` directly in application code.
 - Never commit `.env` files (already in `.gitignore`).
 - Keep `.env.example` in sync with the actual schema in `src/lib/env.ts`.
-- Add new variables to both places (schema + example) before using them.
+- Add new variables to BOTH `src/lib/env.ts` AND `.env.example` before using them.
+- `NODE_ENV` is a compile-time constant in Next.js — `process.env.NODE_ENV` is safe to use directly in client code (Next.js replaces it at build time), but prefer `env.NODE_ENV` in server code.
+- Sentry config files (`sentry.*.config.ts`), `next.config.ts`, and `drizzle.config.ts` are the ONLY exceptions where `process.env` is acceptable — they cannot import from `@/lib/env` due to module resolution ordering.

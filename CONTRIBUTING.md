@@ -283,6 +283,18 @@ All animations follow a **CSS-first approach** — CSS transitions driven by `In
 - **`useDrawOn()`**: Animates SVG `stroke-dashoffset` when element scrolls into view. Use for decorative SVGs.
 - **`<Reveal>` component**: Thin wrapper around `useReveal()`. Supports `stagger` prop for sequenced children animations.
 
+## SEO & AEO Requirements
+
+Every new page MUST follow these SEO/AEO rules:
+
+- **Metadata**: Export `generateMetadata()` using `buildSeoMetadata()` with title, description, URL route.
+- **JSON-LD**: Add relevant structured data via `<JsonLd>` or `<Breadcrumbs>` component. Use schema generators from `@/lib/seo`.
+- **Semantic HTML**: Use `<header>`, `<main>`, `<article>`, `<section>`, `<nav>`, `<footer>`. One `<h1>` per page.
+- **Images**: Every image must have descriptive `alt` text. LCP images get `priority`.
+- **AEO**: The `/llms.txt` route must be updated when new pages are added. AI crawler rules in `robots.ts` use `AI_CRAWLERS` constants.
+
+See `AGENTS.md` (# SEO Requirements) and `docs/guides/seo-guide.md` for the full checklist.
+
 ## Guides (MUST READ)
 
 | Guide | Purpose |

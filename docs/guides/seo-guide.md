@@ -32,8 +32,6 @@ No external packages required. Next.js provides all SEO features built-in.
 NEXT_PUBLIC_SITE_URL=https://yourdomain.com
 ```
 
-> **Important**: All route paths, metadata defaults, and SEO configuration values must be defined in `src/lib/constants.ts` — never hardcoded inline. Import `ROUTES`, `DEFAULT_SEO`, etc. from `@/lib/constants`.
-
 ### 3. Directory Structure
 
 Create this structure in your project:
@@ -88,7 +86,7 @@ src/lib/seo/
 ```typescript
 // src/app/layout.tsx
 import { Metadata } from "next";
-import { env } from "@/lib/env";
+import { env } from "@/lib/env"; // Your env validation
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
@@ -227,6 +225,49 @@ export function getOrganizationSchema() {
 }
 ```
 
+### Product Schema
+
+```typescript
+// src/lib/seo/jsonld/product.ts
+type Product = {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  price?: number;
+  currency?: string;
+  rating?: {
+    ratingValue: number;
+    reviewCount: number;
+  };
+};
+
+export function getProductSchema(product: Product) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: product.image,
+    offers: product.price
+      ? {
+          "@type": "Offer",
+          price: product.price,
+          priceCurrency: product.currency || "USD",
+          availability: "https://schema.org/InStock",
+        }
+      : undefined,
+    aggregateRating: product.rating
+      ? {
+          "@type": "AggregateRating",
+          ratingValue: product.rating.ratingValue,
+          reviewCount: product.rating.reviewCount,
+        }
+      : undefined,
+  };
+}
+```
+
 ### Breadcrumb Schema
 
 ```typescript
@@ -255,13 +296,14 @@ export function getBreadcrumbSchema(items: BreadcrumbItem[]) {
 ```typescript
 // src/app/product/[slug]/page.tsx
 import { JsonLd } from "@/components/seo/JsonLd";
+import { getProductSchema } from "@/lib/seo/jsonld/product";
 import { getBreadcrumbSchema } from "@/lib/seo/jsonld/breadcrumb";
 
 export default async function ProductPage({ params }: Props) {
   const product = await getProduct(params.slug);
 
   const jsonLd = {
-    ...getOrganizationSchema(),
+    ...getProductSchema(product),
     ...getBreadcrumbSchema([
       { name: "Home", url: "https://yoursite.com/" },
       { name: "Products", url: "https://yoursite.com/products" },
@@ -288,26 +330,73 @@ export default async function ProductPage({ params }: Props) {
 // src/app/sitemap.ts
 import { MetadataRoute } from "next";
 import { env } from "@/lib/env";
+import { routing } from "@/i18n/routing"; // Your i18n config
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export async function generateSitemaps() {
+  // Return array of sitemap IDs for segmentation
+  return [{ id: "main" }];
+}
+
+export default async function sitemap({
+  id,
+}: {
+  id: Promise<string>;
+}): Promise<MetadataRoute.Sitemap> {
+  const resolvedId = await id;
   const baseUrl = env.NEXT_PUBLIC_SITE_URL;
   const now = new Date();
 
+  if (resolvedId === "main") {
+    return [
+      {
+        url: baseUrl,
+        lastModified: now,
+        changeFrequency: "daily",
+        priority: 1,
+      },
+      {
+        url: `${baseUrl}/about`,
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.6,
+      },
+      // Add more static pages
+    ];
+  }
+
+  return [];
+}
+```
+
+### Segmented Sitemap (Large Sites)
+
+```typescript
+// For sites with 1000+ pages
+export async function generateSitemaps() {
   return [
-    {
-      url: baseUrl,
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    // Add more static pages
+    { id: "static" },
+    { id: "products" },
+    { id: "blog" },
   ];
+}
+
+export default async function sitemap({
+  id,
+}: {
+  id: Promise<string>;
+}): Promise<MetadataRoute.Sitemap> {
+  const resolvedId = await id;
+
+  switch (resolvedId) {
+    case "static":
+      return generateStaticSitemap();
+    case "products":
+      return generateProductSitemap();
+    case "blog":
+      return generateBlogSitemap();
+    default:
+      return [];
+  }
 }
 ```
 
@@ -343,6 +432,7 @@ export default function robots(): MetadataRoute.Robots {
             "/api/",
             "/admin/",
             "/private/",
+            "/checkout/",
             "/account/",
           ],
         }
@@ -361,7 +451,63 @@ export default function robots(): MetadataRoute.Robots {
 |------|--------|
 | `/api/` | Internal APIs |
 | `/admin/` | Admin panels |
+| `/checkout/` | Transaction pages |
 | `/account/` | User dashboards |
+| `/api/*` | API endpoints |
+| `/search` | Search results (optional) |
+
+---
+
+## Internationalization (i18n) SEO
+
+### Canonical URL Utility
+
+```typescript
+// src/lib/seo/canonical.ts
+import { env } from "@/lib/env";
+
+type Locale = "en" | "es" | string;
+
+export function getCanonicalUrl(path: string, locale: Locale = "en"): string {
+  const baseUrl = env.NEXT_PUBLIC_SITE_URL;
+  const cleanPath = path.replace(/\/$/, "");
+
+  // Handle default locale (usually no prefix)
+  const localePath = locale === "en" ? "" : `/${locale}`;
+
+  return `${baseUrl}${localePath}${cleanPath}`;
+}
+```
+
+### Hreflang in Metadata
+
+```typescript
+alternates: {
+  canonical: getCanonicalUrl(path, locale),
+  languages: {
+    en: getCanonicalUrl(path, "en"),
+    es: getCanonicalUrl(path, "es"),
+    fr: getCanonicalUrl(path, "fr"),
+    "x-default": getCanonicalUrl(path, "en"),
+  },
+}
+```
+
+### URL Structure Options
+
+**Option A: Subdirectory (Recommended)**
+```
+yoursite.com/
+yoursite.com/es/
+yoursite.com/fr/
+```
+
+**Option B: ccTLD (Requires separate domains)**
+```
+yoursite.com/
+yoursite.es/
+yoursite.fr/
+```
 
 ---
 
@@ -387,6 +533,10 @@ Your company description for AI systems.
 - Service 2
 - Service 3
 
+## Locations
+- City, Country
+- City, Country
+
 ## Contact
 - Email: contact@yourdomain.com
 - Website: ${env.NEXT_PUBLIC_SITE_URL}
@@ -399,6 +549,15 @@ Your company description for AI systems.
   });
 }
 ```
+
+### What to Include
+
+1. **Company name & tagline** - Clear brand identity
+2. **Short description** - What you do in 1-2 sentences
+3. **Services/Products** - Bullet list of offerings
+4. **Locations** - Geographic coverage
+5. **Contact info** - Email and website
+6. **Unique value proposition** - Why choose you
 
 ---
 
@@ -424,7 +583,7 @@ import Image from "next/image";
   alt="Descriptive alt text"
   width={1200}
   height={630}
-  priority={true}
+  priority={true}       // Preload
   fetchPriority="high"
 />
 
@@ -438,6 +597,13 @@ import Image from "next/image";
 />
 ```
 
+### Important Rules
+
+1. **Always use descriptive alt text** - Include relevant keywords naturally
+2. **Don't keyword stuff** - Write for users first
+3. **Use semantic HTML** - `<header>`, `<main>`, `<article>`, `<footer>`
+4. **Heading hierarchy** - One `<h1>` per page, proper `<h2>` → `<h3>` structure
+
 ---
 
 ## Validation Checklist
@@ -450,6 +616,7 @@ import Image from "next/image";
 - [ ] Each page has exactly one `<h1>`
 - [ ] Heading hierarchy is correct (no skipping levels)
 - [ ] Canonical URLs are correct
+- [ ] Hreflang tags implemented for all locales
 
 ### Testing
 
@@ -458,6 +625,7 @@ import Image from "next/image";
 | Google Search Console | search.google.com/search-console | Crawl status, indexing |
 | Schema Validator | https://validator.schema.org | JSON-LD validation |
 | Rich Results Test | https://search.google.com/test/rich-results | Rich snippets |
+| Bing Webmaster | www.bing.com/webmaster | Bing indexing |
 | Lighthouse | Chrome DevTools | Core Web Vitals |
 
 ### Common Issues
@@ -467,4 +635,41 @@ import Image from "next/image";
 | Pages not indexed | Check robots.txt and meta robots |
 | Missing rich results | Validate JSON-LD schema |
 | Duplicate content | Implement canonical URLs |
+| Wrong language | Check hreflang implementation |
 | Slow LCP | Optimize above-fold images |
+
+---
+
+## Quick Reference
+
+### File Checklist
+
+```
+src/
+├── app/
+│   ├── layout.tsx          # Root metadata
+│   ├── sitemap.ts          # Sitemap
+│   ├── robots.ts           # Robots.txt
+│   └── [locale]/
+│       └── page.tsx        # Page + generateMetadata
+├── components/
+│   └── seo/
+│       └── JsonLd.tsx      # JSON-LD component
+└── lib/
+    └── seo/
+        ├── canonical.ts     # getCanonicalUrl()
+        ├── metadata/       # generateMetadata()
+        └── jsonld/        # Schema builders
+```
+
+### Key Imports
+
+```typescript
+import { Metadata } from "next";
+import { MetadataRoute } from "next";
+```
+
+---
+
+*Generic SEO Guide v1.0*
+*Based on Next.js App Router best practices*

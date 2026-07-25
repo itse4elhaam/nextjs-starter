@@ -48,16 +48,16 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Remove X-Powered-By header
   poweredByHeader: false,
-
+  
   experimental: {
     // Optimize tree-shaking for large libraries
     optimizePackageImports: [
-      "lucide-react",
+      "lucide-react",       // 1000+ icons
       "date-fns",
-      "@radix-ui/react-*",
+      "@radix-ui/react-*", // All Radix components
     ],
   },
-
+  
   images: {
     // Remote image domains
     remotePatterns: [
@@ -105,7 +105,7 @@ export const dynamicParams = false;
 // Generate all pages at build time
 export async function generateStaticParams() {
   const products = await fetchProducts();
-
+  
   return products.map((product) => ({
     slug: product.slug,
   }));
@@ -113,7 +113,7 @@ export async function generateStaticParams() {
 
 export default async function ProductPage({ params }: Props) {
   const product = await getProduct(params.slug);
-
+  
   return <ProductContent product={product} />;
 }
 ```
@@ -128,20 +128,12 @@ export default async function ProductPage({ params }: Props) {
 
 ### Revalidation Guide
 
-| Content Type | Revalidate |
-|--------------|------------|
+| Content Type | Revalue |
+|--------------|---------|
 | Homepage | 60-300 seconds |
 | Product pages | 600-3600 seconds |
 | Blog posts | 3600+ seconds |
 | User data | Never (SSR) |
-
-> **Important**: Use `DURATION` constants from `src/lib/constants.ts` instead of hardcoded numbers:
-> ```typescript
-> import { DURATION } from "@/lib/constants";
->
-> export const revalidate = DURATION.hour;  // 3600 seconds
-> // NOT: export const revalidate = 3600;
-> ```
 
 ---
 
@@ -191,6 +183,14 @@ import Image from "next/image";
 <Image src="/hero.jpg" priority />
 ```
 
+```typescript
+// ❌ WRONG: Preloading below-fold images
+<Image src="/gallery-1.jpg" priority />
+
+// ✅ CORRECT: Lazy load below fold
+<Image src="/gallery-1.jpg" loading="lazy" />
+```
+
 ### Sizes Attribute Guide
 
 | Layout | Sizes Value |
@@ -198,6 +198,7 @@ import Image from "next/image";
 | Full width (hero) | `100vw` |
 | Half width (2 columns) | `(max-width: 768px) 100vw, 50vw` |
 | Third width (3 columns) | `(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw` |
+| Fourth width | `(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw` |
 
 ---
 
@@ -236,6 +237,19 @@ export default function RootLayout({ children }: Props) {
 - Zero layout shift (size fallback)
 - Automatic subsetting
 
+### Don't Do This
+
+```typescript
+// ❌ WRONG: Manual Google Fonts
+<link href="https://fonts.googleapis.com/css2?family=Inter" />
+
+// ❌ WRONG: Preconnect not needed
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+
+// ✅ CORRECT: next/font handles everything
+import { Inter } from "next/font/google";
+```
+
 ---
 
 ## Dynamic Imports & Code Splitting
@@ -259,7 +273,7 @@ import dynamic from "next/dynamic";
 // Lazy load with SSR disabled
 const VideoBackground = dynamic(
   () => import("@/components/VideoBackground"),
-  {
+  { 
     ssr: false,
     loading: () => <div className="bg-gray-200 animate-pulse" />
   }
@@ -273,6 +287,22 @@ export default function Hero() {
     </div>
   );
 }
+```
+
+### For Heavy Libraries
+
+```typescript
+// ❌ WRONG: Import in initial bundle
+import { Chart } from "chart.js"; // 200KB+
+
+// ✅ CORRECT: Dynamic import
+const Chart = dynamic(() => import("chart.js"), { ssr: false });
+
+// Or use next/dynamic
+const ChartComponent = dynamic(
+  () => import("@/components/Chart").then((mod) => mod.Chart),
+  { ssr: false, loading: () => <ChartSkeleton /> }
+);
 ```
 
 ---
@@ -289,12 +319,12 @@ export default function Page() {
     <main>
       {/* Hero doesn't need data - render immediately */}
       <Hero />
-
+      
       {/* Products need data - wrap in Suspense */}
       <Suspense fallback={<ProductsSkeleton />}>
         <ProductList />
       </Suspense>
-
+      
       <Suspense fallback={<ReviewsSkeleton />}>
         <Reviews />
       </Suspense>
@@ -316,6 +346,28 @@ function ProductsSkeleton() {
     </div>
   );
 }
+
+// ❌ WRONG: Empty or wrong size causes CLS
+function BadSkeleton() {
+  return <div className="animate-pulse" />;
+}
+```
+
+### Streaming HTML
+
+Next.js automatically streams HTML when you use async components:
+
+```typescript
+// This component streams to browser
+async function ProductList() {
+  const products = await fetchProducts(); // Can take time
+  
+  return (
+    <div>
+      {products.map((p) => <ProductCard key={p.id} product={p} />)}
+    </div>
+  );
+}
 ```
 
 ---
@@ -326,13 +378,13 @@ function ProductsSkeleton() {
 
 ```typescript
 // ❌ WRONG: Sequential - blocks rendering
-const translations = await getTranslations("home");  // 100ms
-const products = await getProducts();                 // 200ms (waits)
-const user = await getUser();                        // 100ms (waits)
+const t = await getTranslations("home");     // 100ms
+const products = await getProducts();        // 200ms (waits for t)
+const user = await getUser();               // 100ms (waits for products)
 // Total: 400ms
 
 // ✅ CORRECT: Parallel - concurrent execution
-const [translations, products, user] = await Promise.all([
+const [t, products, user] = await Promise.all([
   getTranslations("home"),
   getProducts(),
   getUser(),
@@ -350,9 +402,47 @@ const [translations, userData] = await Promise.all([
 ]);
 ```
 
+### Don't Over-Parallelize
+
+```typescript
+// ⚠️ Too many parallel requests can overwhelm browser
+// Limit to 3-5 concurrent requests
+const [a, b, c, d, e] = await Promise.all([
+  fetchA(),
+  fetchB(),
+  fetchC(),
+  fetchD(),
+  fetchE(),
+]);
+```
+
 ---
 
 ## Third-Party Script Optimization
+
+### Partytown (Web Worker)
+
+```typescript
+// src/app/layout.tsx
+import { Partytown } from "@builder.io/partytown/react";
+
+export default function RootLayout({ children }: Props) {
+  return (
+    <html>
+      <head>
+        <Partytown forward={["dataLayer.push", "fbq"]} />
+        
+        {/* Analytics runs in web worker */}
+        <script
+          type="text/partytown"
+          src="https://www.googletagmanager.com/gtag/js?id=GA_ID"
+        />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
 
 ### Manual Defer
 
@@ -366,7 +456,7 @@ export function Analytics() {
     // Load after page is interactive
     initAnalytics();
   }, []);
-
+  
   return null;
 }
 ```
@@ -380,6 +470,8 @@ export function Analytics() {
 ```bash
 # Build and analyze
 npm run build
+
+# Check chunk sizes
 ls -la .next/static/chunks/
 ```
 
@@ -391,6 +483,7 @@ import _ from "lodash"; // 70KB+
 
 // ✅ CORRECT: Import only what you need
 import debounce from "lodash/debounce";
+import clamp from "lodash/clamp";
 ```
 
 ### Library Alternatives
@@ -400,6 +493,7 @@ import debounce from "lodash/debounce";
 | lodash | lodash-es, native methods |
 | moment.js | date-fns, dayjs |
 | axios | fetch, ky |
+| fullcalendar | @fullcalendar/react |
 
 ---
 
@@ -412,6 +506,20 @@ import debounce from "lodash/debounce";
 | PageSpeed Insights | pagespeed.web.dev | Lighthouse scores |
 | WebPageTest | webpagetest.org | Advanced metrics |
 | Chrome DevTools | Lighthouse tab | Real device testing |
+| Next.js Analytics | nextjs.org/docs/app/api-reference/next-config#analytics | Build analytics |
+
+### Commands
+
+```bash
+# Full build
+npm run build
+
+# Analyze bundle
+npm run build && ls -la .next/static/chunks/
+
+# Lighthouse CI
+npx lighthouse https://yoursite.com --output=json
+```
 
 ### What to Check
 
@@ -440,3 +548,8 @@ import debounce from "lodash/debounce";
 3. Don't use sequential awaits
 4. Don't import heavy libs eagerly
 5. Don't block with non-critical JS
+
+---
+
+*Generic Performance Guide v1.0*
+*Based on Next.js App Router best practices*
