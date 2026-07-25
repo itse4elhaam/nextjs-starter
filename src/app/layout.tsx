@@ -14,7 +14,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-import { buildSeoMetadata, getSiteUrl } from "@/lib/seo";
+import { JsonLd } from "@/components/app/atoms/JsonLd";
+import {
+  buildSeoMetadata,
+  getOrganizationSchema,
+  getSiteUrl,
+  getWebsiteSchema,
+} from "@/lib/seo";
 
 export const metadata: Metadata = {
   ...buildSeoMetadata({
@@ -35,6 +41,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <JsonLd data={getOrganizationSchema()} />
+        <JsonLd data={getWebsiteSchema()} />
         {children}
       </body>
     </html>

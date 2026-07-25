@@ -5,15 +5,17 @@ import { getSiteUrl } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = getSiteUrl();
+  const currentDate = new Date();
 
+  // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: ChangeFrequency.Weekly,
       priority: SITEMAP_CONFIG.priority.home,
     },
   ];
 
-  return staticRoutes;
+  return [...staticRoutes];
 }

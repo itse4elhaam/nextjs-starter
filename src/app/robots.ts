@@ -1,23 +1,50 @@
 import type { MetadataRoute } from "next";
-import { env } from "@/lib/config";
+import { isProduction } from "@/lib/config";
 import { DISALLOWED_ROBOTS_PATHS } from "@/lib/constants";
 import { getSiteUrl } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = getSiteUrl();
-  const isProduction = env.NODE_ENV === "production";
+
+  if (!isProduction()) {
+    return {
+      rules: {
+        userAgent: "*",
+        disallow: "/",
+      },
+    };
+  }
 
   return {
-    rules: isProduction
-      ? {
-          userAgent: "*",
-          allow: "/",
-          disallow: [...DISALLOWED_ROBOTS_PATHS],
-        }
-      : {
-          userAgent: "*",
-          disallow: "/",
-        },
+    rules: [
+      {
+        // AI training crawlers — disallow entirely
+        userAgent: "CCBot",
+        disallow: "/",
+      },
+      {
+        userAgent: "GPTBot",
+        disallow: "/",
+      },
+      {
+        userAgent: "Claude-Web",
+        disallow: "/",
+      },
+      {
+        userAgent: "anthropic-ai",
+        disallow: "/",
+      },
+      {
+        userAgent: "cohere-ai",
+        disallow: "/",
+      },
+      {
+        // All other crawlers (search engines, etc.)
+        userAgent: "*",
+        allow: "/",
+        disallow: [...DISALLOWED_ROBOTS_PATHS],
+      },
+    ],
     sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
