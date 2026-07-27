@@ -143,6 +143,7 @@ nextjs-starter/
 │   ├── components/
 │   │   ├── app/               # Application-specific components
 │   │   │   ├── atoms/         # Basic building blocks
+│   │   │   │   └── Reveal.tsx # Scroll-triggered reveal animation wrapper
 │   │   │   ├── molecules/     # Composite components
 │   │   │   └── compounds/     # Complex feature components
 │   │   │       ├── examples-server-panel.tsx
@@ -164,7 +165,9 @@ nextjs-starter/
 │   │   ├── storage.ts        # localStorage/sessionStorage helpers
 │   │   └── index.ts          # Barrel export
 │   ├── hooks/                # Custom React hooks
-│   │   └── index.ts          # Barrel export
+│   │   ├── index.ts          # Barrel export
+│   │   ├── useReveal.ts      # Scroll-triggered fade-up animation hook
+│   │   └── useDrawOn.ts      # SVG stroke draw-on animation hook
 │   ├── services/             # Business logic layer
 │   │   └── example-service.ts
 │   └── lib/                  # Core utilities & configuration
@@ -173,8 +176,23 @@ nextjs-starter/
 │       ├── constants.ts      # App constants (HTTP_VERBS, etc.)
 │       ├── enums.ts          # Shared enums (ErrorCode)
 │       ├── types.ts          # TypeScript interfaces/types
-│       ├── examples-schema.ts
 │       ├── utils.ts          # Utility functions (cn, isClientSide)
+│       ├── examples-schema.ts
+│       ├── logger.ts         # Console logger singleton
+│       ├── guards.ts         # Type guard utilities
+│       ├── retry.ts          # Exponential backoff retry helper
+│       ├── batch.ts          # Batched async processing
+│       ├── dates.ts          # Date formatting utilities
+│       ├── error-handler.ts  # Server-side Sentry error handler
+│       ├── client-errors.ts  # Client-side Sentry error reporting
+│       ├── cookie-consent.ts # Analytics consent check
+│       ├── analytics/        # GA4 analytics system
+│       │   ├── client.ts     # Client-side GA4 tracking
+│       │   ├── server.ts     # Server-side Measurement Protocol
+│       │   ├── utm.ts        # UTM parameter extraction & persistence
+│       │   ├── deduplication.ts # GA4 event deduplication
+│       │   ├── debug.ts      # Dev-mode analytics console logger
+│       │   └── web-vitals.ts # Web Vitals tracking hook
 │       └── index.ts          # Barrel export
 ├── .env.example              # Example environment variables
 ├── .gitignore                # Git ignore rules
@@ -647,7 +665,7 @@ Future enhancements planned for this template:
 - [ ] **Storybook** - Component documentation
 - [ ] **i18n** - Internationalization setup
 - [ ] **SEO Components** - Metadata API helpers
-- [ ] **Analytics** - Google Analytics / Vercel Analytics
+- [x] **Analytics** - Google Analytics / Vercel Analytics
 - [ ] **Monitoring** - Sentry error tracking
 
 **Want to contribute?** See [Contributing](#-contributing) below!

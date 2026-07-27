@@ -6,9 +6,10 @@ import { err, ok, type Result } from "neverthrow";
 import { revalidatePath } from "next/cache";
 
 import { createAction } from "@/actions/action-base";
-import { ErrorCode } from "@/lib/enums";
+import { ErrorCode, LogContext } from "@/lib/enums";
 import { createError } from "@/lib/errors";
 import { createExampleSchema } from "@/lib/examples-schema";
+import { logger } from "@/lib/logger";
 import type {
   IError,
   IExampleDto,
@@ -25,6 +26,7 @@ function parseExampleFormData(
   IError<ErrorCode.InvalidForm | ErrorCode.ValidationError>
 > {
   if (!(rawInput instanceof FormData)) {
+    logger.warn(LogContext.ErrorHandler, "Example form: invalid form payload");
     return err(createError(ErrorCode.InvalidForm, "Invalid form payload."));
   }
 
@@ -32,6 +34,9 @@ function parseExampleFormData(
     Object.fromEntries(rawInput.entries()),
   );
   if (!parsed.success) {
+    logger.warn(LogContext.ErrorHandler, "Example form: validation failed", {
+      errors: parsed.error.issues,
+    });
     return err(
       createError(
         ErrorCode.ValidationError,
@@ -53,10 +58,21 @@ export const createExampleAction = createAction<
   handler: async ({ input }) => {
     const createdResult = await createExampleService(input);
     if (createdResult.isErr()) {
+      logger.error(LogContext.ErrorHandler, "Example form: creation failed", {
+        error: createdResult.error,
+      });
       return err(createdResult.error);
     }
 
     revalidatePath("/");
+
+    logger.success(
+      LogContext.ErrorHandler,
+      "Example form: created successfully",
+      {
+        id: createdResult.value.id,
+      },
+    );
 
     return ok(createdResult.value);
   },
