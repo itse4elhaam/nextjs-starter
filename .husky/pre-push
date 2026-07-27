@@ -18,7 +18,8 @@ if echo "$BRANCH" | grep -qE "^($PROTECTED)$"; then
   fi
 fi
 
-if git diff --cached --diff-filter=ACMR --name-only -z | xargs -0 -r grep -lP '<<<<<<< |=======|>>>>>>>' --; then
+STAGED_FILES=$(git diff --cached --diff-filter=ACMR --name-only -z)
+if [ -n "$STAGED_FILES" ] && echo "$STAGED_FILES" | xargs -0 grep -lE '<<<<<<< |=======|>>>>>>>' -- 2>/dev/null; then
   echo ""
   echo "  Unresolved merge conflict markers found. Aborting push."
   echo ""
